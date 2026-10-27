@@ -21,9 +21,16 @@ export function LangProvider({ children }) {
   }, []);
   useEffect(() => {
     document.documentElement.lang = lang;
-    document.title = lang === 'en'
+    const en = lang === 'en';
+    document.title = en
       ? 'Blue Consulting · Environmental, mining and administrative advisory'
       : 'Blue Consulting · Asesoría ambiental, minera y administrativa';
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc) {
+      desc.setAttribute('content', en
+        ? 'Blue Consulting S.A.S.: technical and legal advisory, consulting and training in environmental, mining and administrative matters. Bucaramanga, Colombia.'
+        : 'Blue Consulting S.A.S.: asesoría, consultoría y capacitación técnica y jurídica en materia ambiental, minera y administrativa. Bucaramanga, Colombia.');
+    }
   }, [lang]);
   const value = useMemo(() => ({
     lang, setLang,
@@ -34,8 +41,7 @@ export function LangProvider({ children }) {
 
 export const useLang = () => useContext(Ctx);
 
-/* Texto traducido: <Tx k="hero.title" as="h1" className="..." />  (admite <em>/<br> del diccionario) */
 export function Tx({ k, as: Tag = 'span', ...rest }) {
   const { t } = useLang();
-  return <Tag {...rest} dangerouslySetInnerHTML={{ __html: t(k) }} />;
+  return <Tag {...rest}>{t(k)}</Tag>;
 }
