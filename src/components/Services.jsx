@@ -1,37 +1,37 @@
+import { useEffect, useState } from 'react';
 import { CONFIG } from '../config.js';
 import { Tx, useLang } from '../i18n/LangContext.jsx';
-import { Reveal } from './Reveal.jsx';
 
-const CARDS = [
+const ITEMS = [
   {
     id: 'ambiental',
     book: 'ambiental',
+    num: '01',
     title: 'svc.env',
     lead: 'svc.env.lead',
     alt: 'svc.env.alt',
     points: ['svc.env.1', 'svc.env.2', 'svc.env.3'],
     image: CONFIG.serviceImages.ambiental,
-    num: '01',
   },
   {
     id: 'minera',
     book: 'minero',
+    num: '02',
     title: 'svc.min',
     lead: 'svc.min.lead',
     alt: 'svc.min.alt',
     points: ['svc.min.1', 'svc.min.2', 'svc.min.3'],
     image: CONFIG.serviceImages.minero,
-    num: '02',
   },
   {
     id: 'administrativa',
     book: 'administrativo',
+    num: '03',
     title: 'svc.adm',
     lead: 'svc.adm.lead',
     alt: 'svc.adm.alt',
     points: ['svc.adm.1', 'svc.adm.2'],
     image: CONFIG.serviceImages.administrativo,
-    num: '03',
   },
 ];
 
@@ -44,49 +44,100 @@ const goToBooking = (id) => (event) => {
 
 export default function Services() {
   const { t } = useLang();
+  const [on, setOn] = useState(0);
+  const [canHover, setCanHover] = useState(false);
+  const pick = (index) => setOn(index);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const apply = () => setCanHover(mq.matches);
+    apply();
+    mq.addEventListener?.('change', apply);
+    return () => mq.removeEventListener?.('change', apply);
+  }, []);
+
+  useEffect(() => {
+    const onTab = (event) => {
+      const index = ITEMS.findIndex((item) => item.id === event.detail);
+      if (index >= 0) setOn(index);
+    };
+    window.addEventListener('bc-tab', onTab);
+    return () => window.removeEventListener('bc-tab', onTab);
+  }, []);
+
+  const onKey = (event) => {
+    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+    event.preventDefault();
+    const next = event.key === 'ArrowDown' ? (on + 1) % ITEMS.length : (on + ITEMS.length - 1) % ITEMS.length;
+    setOn(next);
+    document.getElementById(`tab-${ITEMS[next].id}`)?.focus();
+  };
+
   return (
-    <section className="section section--white" id="servicios">
-      <div className="wrap">
-        <div className="split-head">
-          <Reveal>
-            <p className="eyebrow">
-              <span className="eyebrow__line" aria-hidden="true" />
-              <Tx k="svc.kicker" />
-            </p>
-            <Tx as="h2" k="svc.title" />
-          </Reveal>
-          <Reveal delay={60}>
-            <Tx as="p" k="svc.lead" className="lead" />
-          </Reveal>
+    <section className="atlas" id="servicios">
+      <div className="wrap atlas__grid">
+        <div className="atlas__index">
+          <p className="kicker"><Tx k="svc.kicker" /></p>
+          <Tx as="h2" k="svc.title" />
+          <div role="tablist" aria-label={t('svc.kicker')} onKeyDown={onKey}>
+            {ITEMS.map((item, index) => (
+              <button
+                key={item.id}
+                id={`tab-${item.id}`}
+                type="button"
+                role="tab"
+                aria-selected={on === index}
+                aria-controls={item.id}
+                tabIndex={on === index ? 0 : -1}
+                className={on === index ? 'is-on' : ''}
+                onMouseEnter={canHover ? () => pick(index) : undefined}
+                onFocus={() => pick(index)}
+                onClick={() => pick(index)}
+              >
+                <span>{item.num}</span>
+                <Tx k={item.title} />
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="cards">
-          {CARDS.map((card, index) => (
-            <Reveal as="article" className="card" id={card.id} key={card.id} delay={Math.min(index, 3) * 60}>
-              <div className="card__photo">
+        <div className="atlas__stage">
+          {ITEMS.map((item, index) => (
+            <figure
+              key={item.id}
+              id={item.id}
+              role="tabpanel"
+              aria-labelledby={`tab-${item.id}`}
+              aria-hidden={on !== index}
+              ref={(node) => {
+                if (!node) return;
+                if (on !== index) node.setAttribute('inert', '');
+                else node.removeAttribute('inert');
+              }}
+              className={on === index ? 'is-on' : ''}
+            >
+              <div className="tone">
                 <img
-                  src={card.image.src}
-                  srcSet={card.image.srcSet}
-                  sizes="(max-width: 860px) 100vw, 380px"
-                  alt={t(card.alt)}
-                  width="1280"
-                  height="960"
-                  loading="lazy"
+                  src={item.image.src}
+                  srcSet={item.image.srcSet}
+                  sizes="(max-width: 900px) 100vw, 560px"
+                  alt={t(item.alt)}
+                  width="1200"
+                  height="800"
+                  loading={index === 0 ? 'eager' : 'lazy'}
                   decoding="async"
                 />
               </div>
-              <p className="card__num">{card.num}</p>
-              <Tx as="h3" k={card.title} />
-              <Tx as="p" k={card.lead} />
-              <ul>
-                {card.points.map((key) => (
-                  <li key={key}><Tx k={key} /></li>
-                ))}
-              </ul>
-              <a className="link-arrow" href="#agendar" onClick={goToBooking(card.book)}>
-                <Tx k="svc.more" />
-                <span className="arr" aria-hidden="true">→</span>
-              </a>
-            </Reveal>
+              <figcaption>
+                <Tx as="p" k={item.lead} />
+                <ul>
+                  {item.points.map((key) => <li key={key}><Tx k={key} /></li>)}
+                </ul>
+                <a className="link-arrow" href="#agendar" onClick={goToBooking(item.book)}>
+                  <Tx k="svc.more" />
+                  <span className="arr" aria-hidden="true">→</span>
+                </a>
+              </figcaption>
+            </figure>
           ))}
         </div>
       </div>

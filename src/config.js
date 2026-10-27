@@ -12,24 +12,31 @@ export const CONFIG = {
   social: { instagram: '', linkedin: '' },
 
   heroImage: {
-    src: './assets/hero-1280.webp',
-    srcSet: './assets/hero-640.webp 640w, ./assets/hero-1280.webp 1280w, ./assets/hero-1920.webp 1920w',
+    src: './assets/territory-960.webp',
+    srcSet: './assets/territory-480.webp 480w, ./assets/territory-960.webp 960w',
   },
   aboutImage: './assets/about.webp',
+  meetImage: './assets/meet.webp',
   serviceImages: {
     ambiental: {
-      src: './assets/svc-amb-1280.webp',
-      srcSet: './assets/svc-amb-640.webp 640w, ./assets/svc-amb-1280.webp 1280w',
+      src: './assets/svc-amb-1200.webp',
+      srcSet: './assets/svc-amb-640.webp 640w, ./assets/svc-amb-1200.webp 1200w',
     },
     minero: {
-      src: './assets/svc-min-1280.webp',
-      srcSet: './assets/svc-min-640.webp 640w, ./assets/svc-min-1280.webp 1280w',
+      src: './assets/svc-min-1200.webp',
+      srcSet: './assets/svc-min-640.webp 640w, ./assets/svc-min-1200.webp 1200w',
     },
     administrativo: {
-      src: './assets/svc-adm-1280.webp',
-      srcSet: './assets/svc-adm-640.webp 640w, ./assets/svc-adm-1280.webp 1280w',
+      src: './assets/svc-adm-1200.webp',
+      srcSet: './assets/svc-adm-640.webp 640w, ./assets/svc-adm-1200.webp 1200w',
     },
   },
+  stepImages: [
+    './assets/step-1.webp',
+    './assets/step-2.webp',
+    './assets/step-3.webp',
+    './assets/step-4.webp',
+  ],
 
   bookingEmbedUrl: import.meta.env.VITE_BOOKING_EMBED_URL || '',
 
