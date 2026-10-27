@@ -13,6 +13,12 @@ const toMin = (hm) => {
 };
 const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 
+const PATH = [
+  { n: '01', label: 'step.1', src: CONFIG.stepImages[0], alt: 'method.1.alt' },
+  { n: '02', label: 'step.2', src: CONFIG.stepImages[1], alt: 'method.2.alt' },
+  { n: '03', label: 'step.3', src: CONFIG.stepImages[2], alt: 'method.3.alt' },
+];
+
 const daySlots = (dateStr) => {
   if (!dateStr || !CONFIG.slots.days.includes(parseISO(dateStr).getDay())) return [];
   const out = [];
@@ -267,18 +273,32 @@ export default function Booking() {
   };
 
   return (
-    <section className="block block--white" id="agendar">
-      <div className="wrap">
-        <div className="block__head">
+    <section className="block block--white booking" id="agendar">
+      <div className="invite">
+        <img src={CONFIG.meetImage} alt={t('book.photo')} width="1200" height="675" loading="lazy" decoding="async" />
+        <div className="invite__copy wrap">
           <p className="kicker"><Tx k="book.kicker" /></p>
-          <Tx as="h2" k={done ? 'form.ok.kicker' : 'book.title'} />
-          <p className="visit__alt"><Tx k="book.alt" /></p>
+          <Tx as="h2" k="book.title" />
+          <a className="btn btn--light" href="#reserva"><Tx k="hero.cta1" /></a>
+        </div>
+      </div>
+      <div className="wrap">
+        <ol className="rail">
+          {PATH.map((item) => (
+            <li key={item.n}>
+              <div className="rail__photo zoom">
+                <img src={item.src} alt={t(item.alt)} width="900" height="600" loading="lazy" decoding="async" />
+              </div>
+              <p className="rail__n">{item.n}</p>
+              <Tx as="h3" k={item.label} />
+            </li>
+          ))}
+        </ol>
+        <p className="visit__alt rail__note"><Tx k="book.alt" /></p>
+        <p className="rail__note">
           <a className="link-arrow" href={waHref} target="_blank" rel="noopener noreferrer"><Tx k="book.wa" /></a>
-        </div>
-        <div className="tone tone--banner">
-          <img src={CONFIG.meetImage} alt={t('book.photo')} width="1200" height="675" loading="lazy" decoding="async" />
-        </div>
-        <div className="visit">
+        </p>
+        <div className="visit" id="reserva">
           {done ? (
             <div className="success">
               <p className="eyebrow">

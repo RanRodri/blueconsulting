@@ -1,12 +1,6 @@
 import { CONFIG } from '../config.js';
 import { Tx } from '../i18n/LangContext.jsx';
 
-const TRUST = [
-  ['trust.1.n', 'trust.1.l'],
-  ['trust.2.n', 'trust.2.l'],
-  ['trust.3.n', 'trust.3.l'],
-];
-
 export function Hero() {
   return (
     <section className="hero" id="top">
@@ -32,16 +26,6 @@ export function Hero() {
             <a className="btn btn--ghost" href="#servicios"><Tx k="hero.cta2" /></a>
           </div>
         </div>
-      </div>
-      <div className="hero__trust">
-        <ul className="wrap trust">
-          {TRUST.map(([num, label]) => (
-            <li key={label}>
-              <Tx as="b" k={num} />
-              <Tx as="span" k={label} />
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );

@@ -208,6 +208,8 @@ export const DICT = {
     'social.in': 'LinkedIn',
     'social.pending': 'Enlace pendiente',
     'dock.cta': 'Reservar',
+    'svc.less': 'Ocultar',
+    'scene.water': 'Cascada entre vegetación de montaña',
   },
   en: {
     'nav.home': 'Home',
@@ -417,5 +419,7 @@ export const DICT = {
     'social.in': 'LinkedIn',
     'social.pending': 'Link pending',
     'dock.cta': 'Book',
+    'svc.less': 'Hide',
+    'scene.water': 'A waterfall through mountain vegetation',
   },
 };

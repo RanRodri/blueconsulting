@@ -1,10 +1,11 @@
 import Header from './components/Header.jsx';
 import { Hero } from './components/Hero.jsx';
+import Strip from './components/Strip.jsx';
 import Services from './components/Services.jsx';
-import About from './components/About.jsx';
+import About, { Meter } from './components/About.jsx';
 import { Mission, Values, Quote, Why } from './components/Mission.jsx';
 import Booking from './components/Booking.jsx';
-import { Footer, Float } from './components/ContactFooter.jsx';
+import { Footer, Float, StickyCta } from './components/ContactFooter.jsx';
 import { Tx } from './i18n/LangContext.jsx';
 
 export default function App() {
@@ -14,7 +15,9 @@ export default function App() {
       <Header />
       <main id="main">
         <Hero />
+        <Strip />
         <Services />
+        <Meter />
         <About />
         <Mission />
         <Values />
@@ -24,6 +27,7 @@ export default function App() {
       </main>
       <Footer />
       <Float />
+      <StickyCta />
       <a className="dock" href="#agendar"><Tx k="dock.cta" /></a>
     </>
   );

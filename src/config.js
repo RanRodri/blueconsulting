@@ -15,6 +15,7 @@ export const CONFIG = {
     src: './assets/hero-1200.webp',
     srcSet: './assets/hero-800.webp 800w, ./assets/hero-1200.webp 1200w, ./assets/hero-1600.webp 1600w',
   },
+  quoteImage: './assets/hero-1600.webp',
   aboutImage: './assets/about.webp',
   meetImage: './assets/meet.webp',
   serviceImages: {

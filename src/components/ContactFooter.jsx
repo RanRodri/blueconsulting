@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { CONFIG } from '../config.js';
 import { Tx, useLang } from '../i18n/LangContext.jsx';
 
@@ -73,5 +74,25 @@ export function Footer() {
 export function Float() {
   return (
     <a className="float" href={wa} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">{Whats}</a>
+  );
+}
+
+export function StickyCta() {
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const tick = () => {
+      const book = document.getElementById('agendar');
+      const pastHero = window.scrollY > window.innerHeight * 0.65;
+      const bookingTop = book ? book.getBoundingClientRect().top : 1;
+      setOn(pastHero && bookingTop > window.innerHeight * 0.35);
+    };
+    tick();
+    window.addEventListener('scroll', tick, { passive: true });
+    return () => window.removeEventListener('scroll', tick);
+  }, []);
+  return (
+    <a className={`btn sticky-cta${on ? ' is-on' : ''}`} href="#agendar">
+      <Tx k="nav.book" />
+    </a>
   );
 }
