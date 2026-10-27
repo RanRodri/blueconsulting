@@ -1,27 +1,34 @@
-import { Tx } from '../i18n/LangContext.jsx';
+import { CONFIG } from '../config.js';
+import { Tx, useLang } from '../i18n/LangContext.jsx';
 
 const STEPS = [
-  ['01', 'method.1.t', 'method.1.p'],
-  ['02', 'method.2.t', 'method.2.p'],
-  ['03', 'method.3.t', 'method.3.p'],
-  ['04', 'method.4.t', 'method.4.p'],
+  ['01', 'method.1.t', 'method.1.p', 'method.1.alt', CONFIG.stepImages[0]],
+  ['02', 'method.2.t', 'method.2.p', 'method.2.alt', CONFIG.stepImages[1]],
+  ['03', 'method.3.t', 'method.3.p', 'method.3.alt', CONFIG.stepImages[2]],
+  ['04', 'method.4.t', 'method.4.p', 'method.4.alt', CONFIG.stepImages[3]],
 ];
 
 export default function Method() {
+  const { t } = useLang();
   return (
     <section className="story" id="enfoque">
-      <div className="wrap story__grid">
-        <div className="story__pin">
+      <div className="wrap">
+        <div className="story__head">
           <p className="kicker"><Tx k="method.kicker" /></p>
           <Tx as="h2" k="method.title" />
           <Tx as="p" k="method.quote" className="story__quote" />
         </div>
         <ol className="story__steps">
-          {STEPS.map(([num, title, body]) => (
+          {STEPS.map(([num, title, body, alt, src]) => (
             <li key={num}>
-              <b>{num}</b>
-              <Tx as="h3" k={title} />
-              <Tx as="p" k={body} />
+              <div className="tone">
+                <img src={src} alt={t(alt)} width="960" height="600" loading="lazy" decoding="async" />
+              </div>
+              <div className="story__body">
+                <b>{num}</b>
+                <Tx as="h3" k={title} />
+                <Tx as="p" k={body} />
+              </div>
             </li>
           ))}
         </ol>

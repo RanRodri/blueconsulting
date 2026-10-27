@@ -21,6 +21,13 @@ const Social = ({ href, label, icon }) => {
   return <a className="social" href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>{icon}</a>;
 };
 
+const showService = (id) => (event) => {
+  event.preventDefault();
+  window.dispatchEvent(new CustomEvent('bc-tab', { detail: id }));
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('servicios')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+};
+
 export function Footer() {
   const { lang, t } = useLang();
   const mapSrc = `${CONFIG.mapEmbed}&hl=${lang === 'en' ? 'en' : 'es'}`;
@@ -39,9 +46,9 @@ export function Footer() {
           </div>
           <div>
             <Tx as="h2" k="foot.services" />
-            <a href="#ambiental"><Tx k="svc.env" /></a>
-            <a href="#minera"><Tx k="svc.min" /></a>
-            <a href="#administrativa"><Tx k="svc.adm" /></a>
+            <a href="#servicios" onClick={showService('ambiental')}><Tx k="svc.env" /></a>
+            <a href="#servicios" onClick={showService('minera')}><Tx k="svc.min" /></a>
+            <a href="#servicios" onClick={showService('administrativa')}><Tx k="svc.adm" /></a>
           </div>
           <div>
             <Tx as="h2" k="foot.company" />

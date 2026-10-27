@@ -61,7 +61,6 @@ export function Projects() {
         <div>
           <p className="kicker"><Tx k="cases.kicker" /></p>
           <Tx as="h2" k="cases.title" />
-          <Tx as="p" k="cases.note" className="note" />
           <ol className="index__list">
             {CASES.map(([title, body], index) => (
               <li key={title}>
@@ -73,6 +72,7 @@ export function Projects() {
               </li>
             ))}
           </ol>
+          <Tx as="p" k="cases.note" className="note" />
         </div>
         <aside>
           <p className="kicker"><Tx k="why.kicker" /></p>

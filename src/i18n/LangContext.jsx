@@ -21,9 +21,17 @@ export function LangProvider({ children }) {
   }, []);
   useEffect(() => {
     document.documentElement.lang = lang;
-    document.title = lang === 'en'
+    const title = lang === 'en'
       ? 'Blue Consulting · Environmental, mining and legal advisory'
       : 'Blue Consulting · Consultoría ambiental, minera y jurídica';
+    const description = lang === 'en'
+      ? 'Blue Consulting S.A.S.: technical and legal advisory, consulting and training in environmental, mining and administrative matters. Bucaramanga, Colombia.'
+      : 'Blue Consulting S.A.S.: asesoría, consultoría y capacitación técnica y jurídica en materia ambiental, minera y administrativa. Bucaramanga, Colombia.';
+    document.title = title;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
+    document.querySelector('meta[property="og:locale"]')?.setAttribute('content', lang === 'en' ? 'en_US' : 'es_CO');
     const base = new URL('.', window.location.href).href;
     const links = [
       ['canonical', null, base],

@@ -13,14 +13,6 @@ export default function About() {
   return (
     <section className="portrait" id="nosotros">
       <div className="wrap portrait__grid">
-        <ul className="facts">
-          {FACTS.map(([num, label, word]) => (
-            <li className="fact" key={label}>
-              <Tx as="b" k={num} className={word ? 'is-word' : undefined} />
-              <Tx as="span" k={label} />
-            </li>
-          ))}
-        </ul>
         <div className="portrait__copy">
           <p className="kicker"><Tx k="about.kicker" /></p>
           <Tx as="h2" k="about.title" />
@@ -43,6 +35,14 @@ export default function About() {
           <span className="ring__stroke" />
         </div>
       </div>
+      <ul className="wrap facts">
+        {FACTS.map(([num, label, word]) => (
+          <li className="fact" key={label}>
+            <Tx as="b" k={num} className={word ? 'is-word' : undefined} />
+            <Tx as="span" k={label} />
+          </li>
+        ))}
+      </ul>
       <ul className="wrap principles">
         {[['pr.1.t', 'pr.1.p'], ['pr.2.t', 'pr.2.p'], ['pr.3.t', 'pr.3.p']].map(([title, body], index) => (
           <li key={title}>

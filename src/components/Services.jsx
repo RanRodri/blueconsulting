@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CONFIG } from '../config.js';
 import { Tx, useLang } from '../i18n/LangContext.jsx';
 
@@ -45,7 +45,25 @@ const goToBooking = (id) => (event) => {
 export default function Services() {
   const { t } = useLang();
   const [on, setOn] = useState(0);
+  const [canHover, setCanHover] = useState(false);
   const pick = (index) => setOn(index);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const apply = () => setCanHover(mq.matches);
+    apply();
+    mq.addEventListener?.('change', apply);
+    return () => mq.removeEventListener?.('change', apply);
+  }, []);
+
+  useEffect(() => {
+    const onTab = (event) => {
+      const index = ITEMS.findIndex((item) => item.id === event.detail);
+      if (index >= 0) setOn(index);
+    };
+    window.addEventListener('bc-tab', onTab);
+    return () => window.removeEventListener('bc-tab', onTab);
+  }, []);
 
   const onKey = (event) => {
     if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
@@ -72,7 +90,7 @@ export default function Services() {
                 aria-controls={item.id}
                 tabIndex={on === index ? 0 : -1}
                 className={on === index ? 'is-on' : ''}
-                onMouseEnter={() => pick(index)}
+                onMouseEnter={canHover ? () => pick(index) : undefined}
                 onFocus={() => pick(index)}
                 onClick={() => pick(index)}
               >
@@ -90,18 +108,25 @@ export default function Services() {
               role="tabpanel"
               aria-labelledby={`tab-${item.id}`}
               aria-hidden={on !== index}
+              ref={(node) => {
+                if (!node) return;
+                if (on !== index) node.setAttribute('inert', '');
+                else node.removeAttribute('inert');
+              }}
               className={on === index ? 'is-on' : ''}
             >
-              <img
-                src={item.image.src}
-                srcSet={item.image.srcSet}
-                sizes="(max-width: 860px) 100vw, 640px"
-                alt={t(item.alt)}
-                width="1280"
-                height="960"
-                loading={index === 0 ? 'eager' : 'lazy'}
-                decoding="async"
-              />
+              <div className="tone">
+                <img
+                  src={item.image.src}
+                  srcSet={item.image.srcSet}
+                  sizes="(max-width: 900px) 100vw, 560px"
+                  alt={t(item.alt)}
+                  width="1200"
+                  height="800"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+              </div>
               <figcaption>
                 <Tx as="p" k={item.lead} />
                 <ul>

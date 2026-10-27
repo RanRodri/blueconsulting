@@ -38,6 +38,11 @@ export default function Header() {
           <img src="./assets/logo-steel.svg" alt="" width="150" height="36" />
         </a>
         <nav className="nav" id="nav" aria-label="Principal">
+          <div className="lang lang--menu" role="group" aria-label={t('a11y.lang')}>
+            <button type="button" className={lang === 'es' ? 'is-active' : ''} aria-pressed={lang === 'es'} onClick={() => setLang('es')}>ES</button>
+            <span aria-hidden="true">/</span>
+            <button type="button" className={lang === 'en' ? 'is-active' : ''} aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</button>
+          </div>
           {LINKS.map(([href, key]) => (
             <a key={key} href={href} onClick={close}><Tx k={key} /></a>
           ))}

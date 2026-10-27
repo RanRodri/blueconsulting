@@ -271,6 +271,9 @@ export default function Booking() {
   return (
     <section className="desk" id="agendar">
       <div className="desk__rail">
+        <div className="tone tone--meet">
+          <img src={CONFIG.meetImage} alt={t('book.photo')} width="1200" height="800" loading="lazy" decoding="async" />
+        </div>
         <p className="kicker"><Tx k="book.kicker" /></p>
         <p className="desk__num">{String(railStep).padStart(2, '0')}</p>
         <Tx as="h2" k={done ? 'form.ok.kicker' : `step.${step}`} />
