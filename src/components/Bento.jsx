@@ -4,9 +4,9 @@ const CELLS = [
   { n: '10', k: 'facts.1.l' },
   { n: '3', k: 'facts.2.l' },
   { n: '2023', k: 'facts.4.l' },
-  { n: '901726097-9', k: 'bento.nit' },
-  { nKey: 'foot.addr', k: 'bento.seat' },
-  { nKey: 'about.sign', k: 'about.role' },
+  { n: '901726097-9', k: 'bento.nit', tone: 'id' },
+  { nKey: 'foot.addr', k: 'bento.seat', tone: 'prose' },
+  { nKey: 'about.sign', k: 'about.role', tone: 'prose' },
 ];
 
 export function Bento() {
@@ -21,7 +21,9 @@ export function Bento() {
         <div className="bento">
           {CELLS.map((cell) => (
             <article key={cell.k}>
-              {cell.n ? <b>{cell.n}</b> : <Tx as="b" k={cell.nKey} />}
+              {cell.n
+                ? <b className={cell.tone ? `bento__${cell.tone}` : undefined}>{cell.n}</b>
+                : <Tx as="b" k={cell.nKey} className={`bento__${cell.tone}`} />}
               <Tx as="span" k={cell.k} />
             </article>
           ))}

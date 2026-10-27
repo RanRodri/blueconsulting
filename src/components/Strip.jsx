@@ -22,6 +22,7 @@ function Set({ hidden, t }) {
             lqip={hidden ? undefined : shot.lqip}
             alt={hidden ? '' : t(shot.alt)}
             sizes="340px"
+            eager={!hidden}
           />
         </figure>
       ))}

@@ -1,4 +1,4 @@
-import { Activity, ViewTransition, startTransition, addTransitionType, useEffect, useRef, useState } from 'react';
+import { Activity, ViewTransition, startTransition, addTransitionType, useState } from 'react';
 import { media, lqip } from '../images.js';
 import { Tx, useLang } from '../i18n/LangContext.jsx';
 import { Picture } from './Picture.jsx';
@@ -144,28 +144,10 @@ export function Values() {
 
 export function Quote() {
   const { t } = useLang();
-  const ref = useRef(null);
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || !('IntersectionObserver' in window)) {
-      setReady(true);
-      return undefined;
-    }
-    const io = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      setReady(true);
-      io.disconnect();
-    }, { rootMargin: '600px' });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  const image = ready
-    ? `linear-gradient(rgba(31,42,59,.84), rgba(31,42,59,.84)), url(${media.quote})`
-    : 'none';
   const words = t('band.quote').split(/(\s+)/);
   return (
-    <section className="band" ref={ref} style={{ backgroundImage: image }}>
+    <section className="band">
+      <img className="band__photo" src={media.quote} alt="" width="1600" height="1067" loading="lazy" decoding="async" />
       <div className="wrap band__in">
         <blockquote>
           <p>

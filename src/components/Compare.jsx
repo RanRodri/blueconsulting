@@ -29,6 +29,7 @@ export function Compare() {
             aria-label={t('compare.range')}
             onChange={(event) => setValue(Number(event.target.value))}
           />
+          <span className="compare__bar" style={{ left: `${value}%` }} aria-hidden="true" />
           <span className="compare__tag compare__tag--before"><Tx k="compare.before" /></span>
           <span className="compare__tag compare__tag--after"><Tx k="compare.after" /></span>
         </div>

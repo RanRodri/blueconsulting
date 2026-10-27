@@ -21,8 +21,8 @@ import sproutLqip from './assets/step-4.webp?w=32&blur=6&quality=40&format=webp'
 import meet from './assets/meet.webp?w=800;1400&format=avif;webp&as=picture';
 import meetLqip from './assets/meet.webp?w=32&blur=6&quality=40&format=webp';
 
-import before from './assets/land-before.jpg?w=900;1400&h=560;875&fit=cover&format=avif;webp&as=picture';
-import beforeLqip from './assets/land-before.jpg?w=32&h=20&fit=cover&blur=6&quality=40&format=webp';
+import before from './assets/land-before.jpg?w=900;1400&h=560;875&fit=cover&position=attention&quality=65&format=avif;webp&as=picture';
+import beforeLqip from './assets/land-before.jpg?w=32&h=20&fit=cover&position=attention&blur=6&quality=40&format=webp';
 import after from './assets/land-after.jpg?w=900;1400&h=560;875&fit=cover&format=avif;webp&as=picture';
 import afterLqip from './assets/land-after.jpg?w=32&h=20&fit=cover&blur=6&quality=40&format=webp';
 
