@@ -286,10 +286,10 @@ export default function Booking() {
         <ol className="rail">
           {PATH.map((item) => (
             <li key={item.n}>
+              <p className="rail__n">{item.n}</p>
               <div className="rail__photo zoom">
                 <img src={item.src} alt={t(item.alt)} width="900" height="600" loading="lazy" decoding="async" />
               </div>
-              <p className="rail__n">{item.n}</p>
               <Tx as="h3" k={item.label} />
             </li>
           ))}
