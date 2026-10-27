@@ -20,11 +20,11 @@ npm run preview
 
 ## Marca
 
-Paleta: `#36465F` profundo · `#556A88` acero · `#87A09A` salvia · `#B6CDCB` niebla · `#A5ADBE` lavanda · `#1F2A3B` tinta · `#F6F9F9` papel · `#D5DCE4` suave.
+Paleta: `#556A88` acero · `#87A09A` salvia · `#B6CDCB` niebla · `#A5ADBE` lavanda. Derivados: `#36465F` profundo y `#F6F9F9` papel.
 
-Logos: `public/assets/logo-{steel,sage,mist,lavender,white}.svg`.
+Logos sin alterar: `public/assets/logo-white.svg` sobre fondo oscuro, `public/assets/logo-steel.svg` sobre fondo claro, y `public/assets/favicon.svg`.
 
-Fuentes locales: Newsreader y Figtree (`public/fonts`).
+Tipografía de la identidad: Roboto (`public/fonts`).
 
 ## Fotos
 
