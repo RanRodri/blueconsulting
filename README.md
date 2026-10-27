@@ -1,7 +1,6 @@
 # Blue Consulting · sitio web (Vite + React)
 
-Diseño inspirado en https://almaster.com.co/ (capturas de referencia en `../reference/`).
-Bilingüe ES (por defecto) / EN. Reserva de reuniones por formulario (WhatsApp / correo) + espacio para Calendly / Google Calendar.
+Bilingüe ES (por defecto) / EN. Sin WebGL. Reserva de reuniones con calendario propio (la confirmación abre WhatsApp) y mapa embebido de la sede.
 
 ## Comandos
     npm install
@@ -9,22 +8,21 @@ Bilingüe ES (por defecto) / EN. Reserva de reuniones por formulario (WhatsApp /
     npm run build    # genera dist/ (estático, base './')
 
 ## Qué editar
-- `src/config.js`: WhatsApp, correo, dirección, horarios del formulario, **`calendarEmbedUrl`** (Calendly/Google Calendar), **`social`** (URLs de Instagram y LinkedIn; vacías = íconos deshabilitados con aviso "pendientes"), **`heroImage`** (ej. `/assets/hero.jpg`, archivo en `public/assets/`; vacío = fondo de marca).
+- `src/config.js`: WhatsApp, correo, dirección, mapa, horarios del formulario, redes y rutas de las fotos.
 - `src/i18n/dictionary.js`: todos los textos ES/EN.
 - `src/styles/styles.css`: diseño y paleta (variables al inicio).
 
 ## Marca
-Paleta oficial (PDF de la cliente): #556A88 azul acero · #87A09A salvia · #B6CDCB niebla · #A5ADBE lavanda gris.
-Derivados (no oficiales, ajustables): #36465f (azul acero oscuro, títulos/pie) y #f2f6f5 (fondo claro).
-Logos vectoriales generados desde `Logo Blue Consulting_2.pdf`: `public/assets/logo-{steel,sage,mist,lavender,white}.svg`.
-Archivos originales de la cliente en `public/assets/brand/`.
-Fuentes: Roboto + Nunito Sans (Google Fonts).
+Paleta oficial: #556A88 azul acero · #87A09A salvia · #B6CDCB niebla · #A5ADBE lavanda gris.
+Derivado para títulos, banda y pie: #36465F.
+Logos: `public/assets/logo-{steel,sage,mist,lavender,white}.svg`.
+Fuentes: Roboto + Nunito Sans.
 
-Sección "Equipo" eliminada a pedido del cliente.
+## Fotos (licencia libre)
+Optimizadas a WebP. El hero se precarga (es la primera pintura). La foto de «Quiénes somos» y el mapa van con `loading="lazy"`.
 
-## 3D del hero (react-three-fiber + drei + three)
-- `src/components/Hero3D.jsx`: anillo "pincelada" de vidrio/brillo (eco del círculo del logo) que flota y reacciona al mouse, sobre cordilleras low-poly y agua en la paleta de marca, luz suave y niebla.
-- Carga diferida (`React.lazy` + `Suspense`, chunk aparte de ~240 kB gzip), DPR limitado a 1.5, se pausa fuera de pantalla (IntersectionObserver).
-- Cae al degradado + SVG si hay "reducir movimiento", sin WebGL, ahorro de datos o móvil de baja potencia. `?3d=0` lo apaga y `?3d=1` lo fuerza.
-- Tarjetas de servicios: inclinación 3D con CSS `perspective` (solo con mouse).
-# blueconsulting
+- `public/assets/hero.webp` — lago alpino y montañas. Unsplash License, `photo-1501785888041-af3ef285b470`. [Archivo](https://images.unsplash.com/photo-1501785888041-af3ef285b470).
+- `public/assets/about.webp` — ingeniera con casco blanco mirando el horizonte. Licencia Pexels, foto 8961055. [Página](https://www.pexels.com/photo/8961055/).
+
+## Mapa
+Iframe perezoso de Google Maps para Carrera 29 No. 55A-56, Bucaramanga (`CONFIG.mapEmbed`). No usa API key.
