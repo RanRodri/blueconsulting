@@ -1,32 +1,65 @@
 import { Tx } from '../i18n/LangContext.jsx';
 import { Reveal } from './Reveal.jsx';
 
-const ICONS = {
-  ambiental: <><path d="M24 5C24 5 10 20 10 29a14 14 0 0 0 28 0C38 20 24 5 24 5Z" /><path d="M16 30c3-3 5-3 8 0s5 3 8 0" /></>,
-  minero: <><path d="M3 40 17 17l8 12 5-7 15 18Z" /><path d="m13 24 4 5 4-5" /></>,
-  administrativo: <path d="M6 20 24 7l18 13M10 20v18M20 20v18M28 20v18M38 20v18M5 40h38" />,
-};
+const Ico = ({ children }) => (
+  <svg className="line-ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>
+);
+
 const AREAS = [
-  { id: 'ambiental', title: 'svc.env', items: ['svc.env.1', 'svc.env.2', 'svc.env.3', 'svc.env.4', 'svc.env.5'] },
-  { id: 'minero', title: 'svc.min', items: ['svc.min.1', 'svc.min.2', 'svc.min.3'] },
-  { id: 'administrativo', title: 'svc.adm', items: ['svc.adm.1', 'svc.adm.2'] },
+  {
+    id: 'ambiental',
+    title: 'svc.env',
+    items: ['svc.env.1', 'svc.env.2', 'svc.env.3', 'svc.env.4', 'svc.env.5'],
+    icon: (
+      <>
+        <path d="M24 42c0-16 10-26 20-28-2 18-12 26-20 28Z" />
+        <path d="M24 42C24 26 14 16 4 14c2 18 12 26 20 28Z" />
+        <path d="M24 42V20" />
+      </>
+    ),
+  },
+  {
+    id: 'minero',
+    title: 'svc.min',
+    items: ['svc.min.1', 'svc.min.2', 'svc.min.3'],
+    icon: (
+      <>
+        <path d="M3 38 16 16l8 12 5-7 16 17" />
+        <path d="M8 38h32" />
+      </>
+    ),
+  },
+  {
+    id: 'administrativo',
+    title: 'svc.adm',
+    items: ['svc.adm.1', 'svc.adm.2'],
+    icon: (
+      <>
+        <path d="M8 40V18L24 8l16 10v22" />
+        <path d="M6 40h36" />
+        <path d="M20 40V28h8v12" />
+        <path d="M16 22h4M28 22h4M16 30h4M28 30h4" />
+      </>
+    ),
+  },
 ];
 
-export default function Services({ onPick }) {
+export default function Services() {
   return (
     <section className="section" id="servicios">
       <div className="wrap">
         <Reveal className="head">
-          <Tx as="h2" k="svc.title" className="h-bold" />
-          <Tx as="p" k="svc.sub" className="sub" />
+          <Tx as="p" k="svc.kicker" className="kicker" />
+          <Tx as="h2" k="svc.title" className="h-display" />
         </Reveal>
         <div className="svc">
-          {AREAS.map((a, i) => (
-            <Reveal as="article" className="svc__col" key={a.id} delay={i * 100}>
-              <svg className="svc__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{ICONS[a.id]}</svg>
-              <Tx as="h3" k={a.title} />
-              <ul>{a.items.map((k) => <Tx as="li" k={k} key={k} />)}</ul>
-              <a href="#reservar" className="svc__link" onClick={() => onPick(a.id)}><Tx k="svc.cta" /></a>
+          {AREAS.map((area, i) => (
+            <Reveal as="article" className="svc__col" key={area.id} delay={i * 80}>
+              <Ico>{area.icon}</Ico>
+              <Tx as="h3" k={area.title} />
+              <ul>
+                {area.items.map((key) => <Tx as="li" k={key} key={key} />)}
+              </ul>
             </Reveal>
           ))}
         </div>
