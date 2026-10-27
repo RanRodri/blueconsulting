@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react';
 import { useLang, Tx } from '../i18n/LangContext.jsx';
 
 const LINKS = [
+  ['#top', 'nav.home'],
   ['#servicios', 'nav.services'],
-  ['#enfoque', 'nav.method'],
   ['#nosotros', 'nav.about'],
-  ['#casos', 'nav.cases'],
   ['#contacto', 'nav.contact'],
 ];
 
@@ -15,7 +14,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setStuck(window.scrollY > 8);
+    const onScroll = () => setStuck(window.scrollY > 24);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -32,10 +31,11 @@ export default function Header() {
   const close = () => setOpen(false);
 
   return (
-    <header className={`masthead${stuck ? ' is-stuck' : ''}${open ? ' is-open' : ''}`}>
-      <div className="wrap masthead__in">
+    <header className={`site-head${stuck ? ' is-stuck' : ''}${open ? ' is-open' : ''}`}>
+      <div className="wrap site-head__in">
         <a href="#top" className="brand" aria-label="Blue Consulting" onClick={close}>
-          <img src="./assets/logo-steel.svg" alt="" width="150" height="36" />
+          <img className="logo-white" src="./assets/logo-white.svg" alt="" width="148" height="36" />
+          <img className="logo-steel" src="./assets/logo-steel.svg" alt="" width="148" height="36" />
         </a>
         <nav className="nav" id="nav" aria-label="Principal">
           <div className="lang lang--menu" role="group" aria-label={t('a11y.lang')}>
@@ -47,7 +47,7 @@ export default function Header() {
             <a key={key} href={href} onClick={close}><Tx k={key} /></a>
           ))}
         </nav>
-        <div className="masthead__tools">
+        <div className="site-head__tools">
           <div className="lang lang--header" role="group" aria-label={t('a11y.lang')}>
             <button type="button" className={lang === 'es' ? 'is-active' : ''} aria-pressed={lang === 'es'} onClick={() => setLang('es')}>ES</button>
             <span aria-hidden="true">/</span>

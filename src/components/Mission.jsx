@@ -1,25 +1,43 @@
 import { Tx } from '../i18n/LangContext.jsx';
 
 const VALUES = ['val.1', 'val.2', 'val.3', 'val.4', 'val.5'];
-const CASES = [
-  ['cases.1.t', 'cases.1.p'],
-  ['cases.2.t', 'cases.2.p'],
-  ['cases.3.t', 'cases.3.p'],
-  ['cases.4.t', 'cases.4.p'],
-];
 const WHY = [
   ['why.1.t', 'why.1.p'],
   ['why.2.t', 'why.2.p'],
   ['why.3.t', 'why.3.p'],
   ['why.4.t', 'why.4.p'],
+  ['why.5.t', 'why.5.p'],
 ];
+
+export function Mission() {
+  return (
+    <section className="block block--white" id="proposito">
+      <div className="wrap cards cards--3">
+        <article className="plain">
+          <p className="kicker"><Tx k="mission.t" /></p>
+          <Tx as="p" k="mission.p" />
+        </article>
+        <article className="plain">
+          <p className="kicker"><Tx k="vision.t" /></p>
+          <Tx as="p" k="vision.p" />
+        </article>
+        <article className="plain">
+          <p className="kicker"><Tx k="goal.t" /></p>
+          <Tx as="p" k="goal.p" />
+        </article>
+      </div>
+    </section>
+  );
+}
 
 export function Values() {
   return (
-    <section className="roll" id="valores">
+    <section className="values" id="valores">
       <div className="wrap">
-        <p className="kicker"><Tx k="values.kicker" /></p>
-        <Tx as="h2" k="values.title" className="roll__title" />
+        <div className="block__head block__head--light">
+          <p className="kicker"><Tx k="values.kicker" /></p>
+          <Tx as="h2" k="values.title" />
+        </div>
         <ol>
           {VALUES.map((key, index) => (
             <li key={key}>
@@ -33,59 +51,36 @@ export function Values() {
   );
 }
 
-export function Mission() {
+export function Quote() {
   return (
-    <section className="bento" id="proposito">
-      <div className="wrap bento__grid">
-        <article className="bento__main">
-          <p className="kicker"><Tx k="mission.t" /></p>
-          <Tx as="p" k="mission.p" />
-        </article>
-        <article>
-          <p className="kicker"><Tx k="vision.t" /></p>
-          <Tx as="p" k="vision.p" />
-        </article>
-        <article>
-          <p className="kicker"><Tx k="goal.t" /></p>
-          <Tx as="p" k="goal.p" />
-        </article>
+    <section className="band">
+      <div className="wrap band__in">
+        <blockquote>
+          <Tx as="p" k="band.quote" />
+          <footer><Tx k="band.by" /></footer>
+        </blockquote>
+        <a className="btn btn--light" href="#nosotros"><Tx k="band.cta" /></a>
       </div>
     </section>
   );
 }
 
-export function Projects() {
+export function Why() {
   return (
-    <section className="index" id="casos">
-      <div className="wrap index__grid">
-        <div>
-          <p className="kicker"><Tx k="cases.kicker" /></p>
-          <Tx as="h2" k="cases.title" />
-          <ol className="index__list">
-            {CASES.map(([title, body], index) => (
-              <li key={title}>
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <div>
-                  <Tx as="h3" k={title} />
-                  <Tx as="p" k={body} />
-                </div>
-              </li>
-            ))}
-          </ol>
-          <Tx as="p" k="cases.note" className="note" />
-        </div>
-        <aside>
+    <section className="block" id="porque">
+      <div className="wrap">
+        <div className="block__head">
           <p className="kicker"><Tx k="why.kicker" /></p>
           <Tx as="h2" k="why.title" />
-          <ul className="why-list">
-            {WHY.map(([title, body]) => (
-              <li key={title}>
-                <Tx as="h3" k={title} />
-                <Tx as="p" k={body} />
-              </li>
-            ))}
-          </ul>
-        </aside>
+        </div>
+        <div className="cards cards--5">
+          {WHY.map(([title, body]) => (
+            <article className="plain" key={title}>
+              <Tx as="h3" k={title} />
+              <Tx as="p" k={body} />
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

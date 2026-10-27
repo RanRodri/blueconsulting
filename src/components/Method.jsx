@@ -11,21 +11,21 @@ const STEPS = [
 export default function Method() {
   const { t } = useLang();
   return (
-    <section className="story" id="enfoque">
+    <section className="block block--white" id="enfoque">
       <div className="wrap">
-        <div className="story__head">
+        <div className="block__head">
           <p className="kicker"><Tx k="method.kicker" /></p>
           <Tx as="h2" k="method.title" />
-          <Tx as="p" k="method.quote" className="story__quote" />
+          <Tx as="p" k="method.quote" className="lede" />
         </div>
-        <ol className="story__steps">
+        <ol className="cards cards--4 steps">
           {STEPS.map(([num, title, body, alt, src]) => (
-            <li key={num}>
+            <li className="card" key={num}>
               <div className="tone">
                 <img src={src} alt={t(alt)} width="960" height="600" loading="lazy" decoding="async" />
               </div>
-              <div className="story__body">
-                <b>{num}</b>
+              <div className="card__body">
+                <p className="card__num">{num}</p>
                 <Tx as="h3" k={title} />
                 <Tx as="p" k={body} />
               </div>

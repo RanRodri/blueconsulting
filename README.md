@@ -1,6 +1,6 @@
 # Blue Consulting · sitio web (Vite + React)
 
-Bilingüe ES (por defecto) / EN. Sin WebGL. La rama `redesign` es un índice editorial sobre papel, con grilla simétrica (columnas iguales, fichas de la misma altura) y fotografías ligadas a cada tema. Es distinto del hero fotográfico a sangre de `development`. La reserva es una solicitud en tres pasos: el equipo la confirma por WhatsApp o correo. No hay backend.
+Bilingüe ES (por defecto) / EN. Sin WebGL. La rama `redesign` abre con un paisaje a sangre, titular centrado (Newsreader) y una franja de tres datos. Debajo, fichas del mismo alto. Se distingue de `development`, que usa Roboto, un texto a la izquierda y servicios sin fotografía. No hay sección de fotos del equipo. La reserva es una solicitud en tres pasos: el equipo la confirma por WhatsApp o correo. No hay backend.
 
 ## Comandos
     npm install
@@ -13,18 +13,18 @@ Bilingüe ES (por defecto) / EN. Sin WebGL. La rama `redesign` es un índice edi
 - `src/styles/styles.css`: diseño. Titulares Newsreader, cuerpo Figtree.
 
 ## Marca
-Papel `#F6F9F9`. Títulos, hero, botones y pie: `#36465F`. Acento `#556A88`. Salvia `#87A09A` y niebla `#B6CDCB` solo en fondos, líneas e iconos.
+Papel `#F6F9F9`. Títulos y pie: `#36465F`. Acento `#556A88`. Salvia `#87A09A` y niebla `#B6CDCB` solo en fondos, líneas e iconos.
 Logos: `public/assets/logo-{steel,sage,mist,lavender,white}.svg`.
 
 ## Hechos que sí se publican
-Experiencia del equipo: 10 años. Áreas: 3. Sede: Bucaramanga, Carrera 29 No. 55A-56. Constitución: 23 de junio de 2023. NIT 901726097-9. Representante legal: Dra. Yolanda Salazar Ortiz. No hay casos con cifras ni logos de clientes.
+Experiencia del equipo: 10 años. Sectores: 3 (ambiental, minero, administrativo). Sede: Bucaramanga, Carrera 29 No. 55A-56. Constitución: 23 de junio de 2023. NIT 901726097-9. Representante legal: Dra. Yolanda Salazar Ortiz. No hay casos con cifras ni logos de clientes.
 
 ## Fotos (licencia libre)
-WebP, con el mismo tratamiento de color: saturación 0,82, contraste 1,04 y una veladura niebla en multiplicar. El círculo del inicio precarga `territory-480.webp` y ofrece `srcset` 480/960. El resto va con `loading="lazy"`.
+WebP. El hero precarga `hero-800.webp` y ofrece `srcset` 800/1200/1600. El resto va con `loading="lazy"`. Las fichas llevan saturación 0,82, contraste 1,04 y una veladura niebla. El hero conserva el color de la foto y lo cubre un degradado de la paleta.
 
 Unsplash License:
 
-- `territory-*.webp` — cascada y bosque, territorio y agua. `photo-1432405972618-c60b0225b8f9`.
+- `hero-*.webp` — cascada en bosque, paisaje del territorio. `photo-1432405972618-c60b0225b8f9`.
 - `svc-amb-*.webp` — bosque de sol, estudio ambiental. `photo-1441974231531-c6227db76b6e`.
 - `svc-min-*.webp` — tajo a cielo abierto con maquinaria. `photo-1611273426858-450d8e3c9fce`.
 - `svc-adm-*.webp` — firma de documentos. `photo-1450101499163-c8848c66ca85`.
@@ -34,9 +34,7 @@ Unsplash License:
 - `step-4.webp` — siembra de un brote, seguimiento en campo. `photo-1416339306562-f3d12fefd36f`.
 - `meet.webp` — reunión de consulta con portátil. `photo-1600880292203-757bb62b4baf`.
 
-Pexels License:
-
-- `about.webp` — profesional con casco en campo. Foto 8961055.
+`about.webp` (Pexels 8961055) no se publica: no hay sección de fotos del equipo.
 
 ## Mapa
 Iframe perezoso de Google Maps para la sede (`CONFIG.mapEmbed`). No usa API key.

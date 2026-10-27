@@ -266,22 +266,19 @@ export default function Booking() {
     setErr('');
   };
 
-  const railStep = done ? 3 : step;
-
   return (
-    <section className="desk" id="agendar">
-      <div className="desk__rail">
-        <div className="tone tone--meet">
-          <img src={CONFIG.meetImage} alt={t('book.photo')} width="1200" height="800" loading="lazy" decoding="async" />
+    <section className="block block--white" id="agendar">
+      <div className="wrap">
+        <div className="block__head">
+          <p className="kicker"><Tx k="book.kicker" /></p>
+          <Tx as="h2" k={done ? 'form.ok.kicker' : 'book.title'} />
+          <p className="visit__alt"><Tx k="book.alt" /></p>
+          <a className="link-arrow" href={waHref} target="_blank" rel="noopener noreferrer"><Tx k="book.wa" /></a>
         </div>
-        <p className="kicker"><Tx k="book.kicker" /></p>
-        <p className="desk__num">{String(railStep).padStart(2, '0')}</p>
-        <Tx as="h2" k={done ? 'form.ok.kicker' : `step.${step}`} />
-        <Tx as="p" k="book.note" />
-        <Tx as="p" k="book.alt" className="desk__alt" />
-        <a className="desk__wa" href={waHref} target="_blank" rel="noopener noreferrer"><Tx k="book.wa" /></a>
-      </div>
-      <div className="desk__main">
+        <div className="tone tone--banner">
+          <img src={CONFIG.meetImage} alt={t('book.photo')} width="1200" height="675" loading="lazy" decoding="async" />
+        </div>
+        <div className="visit">
           {done ? (
             <div className="success">
               <p className="eyebrow">
@@ -428,6 +425,7 @@ export default function Booking() {
               </div>
             </form>
           )}
+        </div>
       </div>
     </section>
   );

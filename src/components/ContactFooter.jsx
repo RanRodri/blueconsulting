@@ -21,20 +21,15 @@ const Social = ({ href, label, icon }) => {
   return <a className="social" href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>{icon}</a>;
 };
 
-const showService = (id) => (event) => {
-  event.preventDefault();
-  window.dispatchEvent(new CustomEvent('bc-tab', { detail: id }));
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  document.getElementById('servicios')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
-};
-
 export function Footer() {
   const { lang, t } = useLang();
   const mapSrc = `${CONFIG.mapEmbed}&hl=${lang === 'en' ? 'en' : 'es'}`;
   return (
     <footer className="colophon" id="contacto">
       <div className="wrap">
-        <p className="wordmark" aria-hidden="true"><span>Blue</span><span>Consulting</span></p>
+        <div className="colophon__brand">
+          <img src="./assets/logo-white.svg" alt="Blue Consulting" width="160" height="38" />
+        </div>
         <div className="colophon__grid">
           <div>
             <Tx as="p" k="foot.blurb" />
@@ -46,15 +41,15 @@ export function Footer() {
           </div>
           <div>
             <Tx as="h2" k="foot.services" />
-            <a href="#servicios" onClick={showService('ambiental')}><Tx k="svc.env" /></a>
-            <a href="#servicios" onClick={showService('minera')}><Tx k="svc.min" /></a>
-            <a href="#servicios" onClick={showService('administrativa')}><Tx k="svc.adm" /></a>
+            <a href="#servicios"><Tx k="svc.env" /></a>
+            <a href="#servicios"><Tx k="svc.min" /></a>
+            <a href="#servicios"><Tx k="svc.adm" /></a>
           </div>
           <div>
             <Tx as="h2" k="foot.company" />
             <a href="#nosotros"><Tx k="nav.about" /></a>
-            <a href="#enfoque"><Tx k="nav.method" /></a>
-            <a href="#casos"><Tx k="nav.cases" /></a>
+            <a href="#valores"><Tx k="values.kicker" /></a>
+            <a href="#porque"><Tx k="why.kicker" /></a>
             <a href="#agendar"><Tx k="nav.book" /></a>
           </div>
           <div>

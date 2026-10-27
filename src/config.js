@@ -12,8 +12,8 @@ export const CONFIG = {
   social: { instagram: '', linkedin: '' },
 
   heroImage: {
-    src: './assets/territory-960.webp',
-    srcSet: './assets/territory-480.webp 480w, ./assets/territory-960.webp 960w',
+    src: './assets/hero-1200.webp',
+    srcSet: './assets/hero-800.webp 800w, ./assets/hero-1200.webp 1200w, ./assets/hero-1600.webp 1600w',
   },
   aboutImage: './assets/about.webp',
   meetImage: './assets/meet.webp',
