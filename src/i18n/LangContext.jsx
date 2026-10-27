@@ -1,40 +1,59 @@
-import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState, useCallback, startTransition, addTransitionType } from 'react';
 import { DICT } from './dictionary.js';
 
 const Ctx = createContext(null);
 
-function initialLang() {
-  try {
-    const q = new URLSearchParams(window.location.search).get('lang');
-    if (q === 'en' || q === 'es') return q;
-    const s = localStorage.getItem('bc-lang');
-    if (s === 'en' || s === 'es') return s;
-  } catch (e) { /* ignore */ }
-  return 'es'; // ES por defecto
+export function langFromPath() {
+  const parts = window.location.pathname.split('/').filter(Boolean);
+  const last = parts[parts.length - 1];
+  if (last === 'en' || last === 'es') return last;
+  return null;
+}
+
+function applyLang(setLangState, next) {
+  startTransition(() => {
+    addTransitionType('lang');
+    setLangState(next);
+  });
 }
 
 export function LangProvider({ children }) {
-  const [lang, setLangState] = useState(initialLang);
-  const setLang = useCallback((l) => {
-    setLangState(l);
-    try { localStorage.setItem('bc-lang', l); } catch (e) { /* ignore */ }
+  const [lang, setLangState] = useState(() => langFromPath() || 'es');
+
+  const setLang = useCallback((next) => {
+    if (next !== 'es' && next !== 'en') return;
+    applyLang(setLangState, next);
+    const url = `/${next}${window.location.hash || ''}`;
+    if (window.location.pathname.replace(/\/$/, '') !== `/${next}`) {
+      window.history.pushState(null, '', url);
+    }
+    try { localStorage.setItem('bc-lang', next); } catch { /* ignore */ }
   }, []);
+
+  useEffect(() => {
+    if (!langFromPath()) {
+      window.history.replaceState(null, '', `/es${window.location.hash || ''}`);
+    }
+    const onPop = () => applyLang(setLangState, langFromPath() || 'es');
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+
   useEffect(() => {
     document.documentElement.lang = lang;
-    document.title = lang === 'en'
-      ? 'Blue Consulting · Environmental, mining and administrative advisory'
-      : 'Blue Consulting · Asesoría ambiental, minera y administrativa';
   }, [lang]);
+
   const value = useMemo(() => ({
-    lang, setLang,
-    t: (k) => DICT[lang][k] ?? DICT.es[k] ?? k,
+    lang,
+    setLang,
+    t: (key) => DICT[lang][key] ?? DICT.es[key] ?? key,
   }), [lang, setLang]);
+
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 
 export const useLang = () => useContext(Ctx);
 
-/* Texto traducido: <Tx k="hero.title" as="h1" className="..." />  (admite <em>/<br> del diccionario) */
 export function Tx({ k, as: Tag = 'span', ...rest }) {
   const { t } = useLang();
   return <Tag {...rest} dangerouslySetInnerHTML={{ __html: t(k) }} />;

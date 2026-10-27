@@ -1,26 +1,29 @@
-import { CONFIG } from '../config.js';
-import { Tx } from '../i18n/LangContext.jsx';
+import { media, lqip } from '../images.js';
+import { Tx, useLang } from '../i18n/LangContext.jsx';
+import { Picture } from './Picture.jsx';
 
 export function Hero() {
+  const { t } = useLang();
   return (
     <section className="hero" id="top">
-      <img
+      <Picture
         className="hero__photo"
-        src={CONFIG.heroImage}
-        alt=""
-        width="1600"
-        height="1000"
-        decoding="async"
-        fetchPriority="high"
+        picture={media.hero}
+        lqip={lqip.hero}
+        alt={t('scene.water')}
+        sizes="100vw"
+        priority
       />
       <div className="hero__shade" aria-hidden="true" />
-      <div className="hero__in">
-        <Tx as="p" k="hero.eyebrow" className="kicker kicker--light" />
-        <Tx as="h1" k="hero.title" className="hero__title" />
-        <Tx as="p" k="hero.lead" className="hero__lead" />
-        <div className="hero__cta">
-          <a href="#reservar" className="btn btn--fill"><Tx k="hero.cta1" /></a>
-          <a href="#servicios" className="btn btn--ghost"><Tx k="hero.cta2" /></a>
+      <div className="hero__body">
+        <div className="wrap hero__copy">
+          <p className="kicker kicker--light"><Tx k="hero.eyebrow" /></p>
+          <Tx as="h1" k="hero.title" />
+          <Tx as="p" k="hero.lead" className="hero__lead" />
+          <div className="hero__cta">
+            <button type="button" className="btn btn--light" onClick={() => window.dispatchEvent(new Event('bc-open-book'))}><Tx k="hero.cta1" /></button>
+            <a className="btn btn--ghost" href="#servicios"><Tx k="hero.cta2" /></a>
+          </div>
         </div>
       </div>
     </section>

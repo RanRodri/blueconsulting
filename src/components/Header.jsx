@@ -3,9 +3,8 @@ import { useLang, Tx } from '../i18n/LangContext.jsx';
 
 const LINKS = [
   ['#top', 'nav.home'],
-  ['#nosotros', 'nav.about'],
   ['#servicios', 'nav.services'],
-  ['#reservar', 'nav.book'],
+  ['#nosotros', 'nav.about'],
   ['#contacto', 'nav.contact'],
 ];
 
@@ -13,34 +12,60 @@ export default function Header() {
   const { lang, setLang, t } = useLang();
   const [stuck, setStuck] = useState(false);
   const [open, setOpen] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setStuck(window.scrollY > 24);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-  useEffect(() => { document.body.classList.toggle('nav-open', open); }, [open]);
+
+  useEffect(() => {
+    document.body.classList.toggle('nav-open', open);
+    if (!open) return undefined;
+    const onKey = (event) => { if (event.key === 'Escape') setOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
   const close = () => setOpen(false);
+
   return (
-    <header className={`header${stuck ? ' is-stuck' : ''}`}>
-      <div className="header__in">
+    <header className={`site-head${stuck ? ' is-stuck' : ''}${open ? ' is-open' : ''}`}>
+      <div className="wrap site-head__in">
         <a href="#top" className="brand" aria-label="Blue Consulting" onClick={close}>
-          <img src="./assets/logo-white.svg" alt="" className="brand__on-dark" />
-          <img src="./assets/logo-steel.svg" alt="" className="brand__on-light" />
+          <img className="logo-white" src="/assets/logo-white.svg" alt="" width="148" height="36" />
+          <img className="logo-steel" src="/assets/logo-steel.svg" alt="" width="148" height="36" />
         </a>
         <nav className="nav" id="nav" aria-label="Principal">
-          {LINKS.map(([href, key]) => (
-            <a key={key} href={href} onClick={close}><Tx k={key} /></a>
-          ))}
-        </nav>
-        <div className="header__tools">
-          <div className="lang" role="group" aria-label="Idioma / Language">
+          <div className="lang lang--menu" role="group" aria-label={t('a11y.lang')}>
             <button type="button" className={lang === 'es' ? 'is-active' : ''} aria-pressed={lang === 'es'} onClick={() => setLang('es')}>ES</button>
             <span aria-hidden="true">/</span>
             <button type="button" className={lang === 'en' ? 'is-active' : ''} aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</button>
           </div>
-          <button className="burger" type="button" aria-label={t('nav.menu')} aria-expanded={open} aria-controls="nav" onClick={() => setOpen((v) => !v)}>
-            <span /><span /><span />
+          {LINKS.map(([href, key]) => (
+            <a key={key} href={href} onClick={close}><Tx k={key} /></a>
+          ))}
+        </nav>
+        <div className="site-head__tools">
+          <div className="lang lang--header" role="group" aria-label={t('a11y.lang')}>
+            <button type="button" className={lang === 'es' ? 'is-active' : ''} aria-pressed={lang === 'es'} onClick={() => setLang('es')}>ES</button>
+            <span aria-hidden="true">/</span>
+            <button type="button" className={lang === 'en' ? 'is-active' : ''} aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</button>
+          </div>
+          <button type="button" className="btn btn--book" onClick={() => { close(); window.dispatchEvent(new Event('bc-open-book')); }}>
+            <span className="btn__long"><Tx k="nav.book" /></span>
+            <span className="btn__short"><Tx k="nav.book.short" /></span>
+          </button>
+          <button
+            className="burger"
+            type="button"
+            aria-label={open ? t('nav.close') : t('nav.menu')}
+            aria-expanded={open}
+            aria-controls="nav"
+            onClick={() => setOpen((value) => !value)}
+          >
+            <span /><span />
           </button>
         </div>
       </div>

@@ -1,27 +1,47 @@
-import { CONFIG } from '../config.js';
+import { media, lqip } from '../images.js';
 import { Tx, useLang } from '../i18n/LangContext.jsx';
-import { Reveal } from './Reveal.jsx';
+import { Count } from './Motion.jsx';
+import { Picture } from './Picture.jsx';
+
+const METER = [
+  [10, 'facts.1.l'],
+  [3, 'facts.2.l'],
+  [2023, 'facts.4.l'],
+];
+
+export function Meter() {
+  return (
+    <section className="meter">
+      <ul className="wrap">
+        {METER.map(([num, label]) => (
+          <li key={label}>
+            <Count to={num} />
+            <Tx as="span" k={label} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
 
 export default function About() {
   const { t } = useLang();
   return (
-    <section className="section section--tint about" id="nosotros">
-      <div className="wrap about__grid">
-        <Reveal className="about__media">
-          <img
-            src={CONFIG.aboutImage}
-            alt={t('about.photo')}
-            width="1000"
-            height="1500"
-            loading="lazy"
-            decoding="async"
-          />
-        </Reveal>
-        <Reveal className="about__copy">
-          <Tx as="p" k="about.kicker" className="kicker" />
-          <Tx as="h2" k="about.title" className="h-display h-display--left" />
-          <Tx as="p" k="about.p" className="body" />
-        </Reveal>
+    <section className="block" id="nosotros">
+      <div className="wrap split">
+        <figure className="split__photo zoom">
+          <Picture picture={media.plans} lqip={lqip.plans} alt={t('method.1.alt')} sizes="(max-width: 860px) 100vw, 50vw" />
+        </figure>
+        <div className="split__copy">
+          <p className="kicker"><Tx k="about.kicker" /></p>
+          <Tx as="h2" k="about.title" />
+          <Tx as="p" k="about.p" />
+          <Tx as="p" k="about.meta" className="about__meta" />
+          <p className="sign">
+            <Tx as="strong" k="about.sign" />
+            <Tx as="span" k="about.role" />
+          </p>
+        </div>
       </div>
     </section>
   );
