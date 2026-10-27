@@ -21,8 +21,8 @@ export const CONFIG = {
     days: [1, 2, 3, 4, 5],
     start: '08:00',
     end: '17:00',
-    stepMinutes: 60,
-    skip: ['12:00', '13:00'],
+    stepMinutes: 30,
+    skip: ['12:00', '12:30', '13:00', '13:30'],
   },
   timezoneLabel: 'Colombia (UTC-5)',
 };

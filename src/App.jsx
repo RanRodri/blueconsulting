@@ -14,8 +14,8 @@ export default function App() {
       <Header />
       <main id="main">
         <Hero />
-        <Services />
         <About />
+        <Services />
         <Mission />
         <Values />
         <CtaBand />

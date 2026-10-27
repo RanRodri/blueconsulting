@@ -37,6 +37,7 @@ export function Contact() {
         <Reveal className="contact__copy">
           <Tx as="p" k="contact.kicker" className="kicker" />
           <Tx as="h2" k="contact.title" className="h-display h-display--left" />
+          <Tx as="p" k="contact.hours" className="contact__hours" />
           <ul className="contact__list">
             <li>
               <Pin />
@@ -57,47 +58,77 @@ export function Contact() {
               </div>
             </li>
           </ul>
+          <div className="contact__actions">
+            <a className="btn btn--steel" href="#reservar"><Tx k="hero.cta1" /></a>
+            <a className="btn btn--line" href={CONFIG.mapsUrl} target="_blank" rel="noopener noreferrer"><Tx k="contact.directions" /></a>
+          </div>
         </Reveal>
         <Reveal className="contact__map">
-          <iframe
-            title={t('contact.map')}
-            src={mapSrc}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+          <div className="contact__frame">
+            <iframe
+              title={t('contact.map')}
+              src={mapSrc}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+          <Tx as="p" k="contact.addrLine" className="contact__pin" />
         </Reveal>
       </div>
     </section>
   );
 }
 
-const NAV = [
-  ['#top', 'nav.home'],
-  ['#servicios', 'nav.services'],
+const SERVICE_LINKS = [
+  ['#area-ambiental', 'svc.env'],
+  ['#area-minero', 'svc.min'],
+  ['#area-administrativo', 'svc.adm'],
+];
+
+const COMPANY_LINKS = [
   ['#nosotros', 'nav.about'],
+  ['#valores', 'values.kicker'],
+  ['#porque', 'why.kicker'],
   ['#reservar', 'nav.book'],
-  ['#contacto', 'nav.contact'],
 ];
 
 export function Footer() {
+  const { t } = useLang();
   return (
     <>
       <footer className="footer">
-        <div className="footer__top">
-          <div className="footer__in">
-            <a href="#top" className="footer__brand" aria-label="Blue Consulting">
-              <img src="./assets/logo-white.svg" alt="" />
-            </a>
-            <nav className="footer__nav" aria-label="Footer">
-              {NAV.map(([href, key]) => <a key={key} href={href}><Tx k={key} /></a>)}
+        <div className="footer__in">
+          <a href="#top" className="footer__brand" aria-label="Blue Consulting">
+            <img src="./assets/logo-white.svg" alt="" />
+          </a>
+          <div className="footer__grid">
+            <div className="footer__col footer__intro">
+              <Tx as="p" k="foot.blurb" />
+              <div className="footer__social">
+                <SocialLink href={CONFIG.social.instagram} label="Instagram" icon={Instagram} />
+                <SocialLink href={CONFIG.social.linkedin} label="LinkedIn" icon={Linkedin} />
+              </div>
+            </div>
+            <nav className="footer__col" aria-label={t('foot.services')}>
+              <Tx as="p" k="foot.services" className="footer__label" />
+              {SERVICE_LINKS.map(([href, key]) => <a key={key} href={href}><Tx k={key} /></a>)}
             </nav>
-            <div className="footer__social">
-              <SocialLink href={CONFIG.social.instagram} label="Instagram" icon={Instagram} />
-              <SocialLink href={CONFIG.social.linkedin} label="LinkedIn" icon={Linkedin} />
+            <nav className="footer__col" aria-label={t('foot.company')}>
+              <Tx as="p" k="foot.company" className="footer__label" />
+              {COMPANY_LINKS.map(([href, key]) => <a key={key} href={href}><Tx k={key} /></a>)}
+            </nav>
+            <div className="footer__col footer__contact">
+              <Tx as="p" k="foot.contact" className="footer__label" />
+              <Tx as="p" k="contact.addr" />
+              <p><a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></p>
+              <p><a href={`tel:+${CONFIG.whatsappNumber}`}>{CONFIG.whatsappDisplay}</a></p>
             </div>
           </div>
+          <div className="footer__bar">
+            <Tx k="foot.legal" />
+            <Tx k="foot.privacy" />
+          </div>
         </div>
-        <div className="footer__bar"><Tx k="foot.legal" /></div>
       </footer>
       <a href={wa} className="wa-float" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
         <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5.2.6.8 2 .8 2.2.1.1.1.3 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z" /></svg>

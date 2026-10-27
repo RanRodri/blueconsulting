@@ -3,8 +3,9 @@ import { useLang, Tx } from '../i18n/LangContext.jsx';
 
 const LINKS = [
   ['#top', 'nav.home'],
-  ['#servicios', 'nav.services'],
   ['#nosotros', 'nav.about'],
+  ['#servicios', 'nav.services'],
+  ['#porque', 'nav.why'],
   ['#reservar', 'nav.book'],
   ['#contacto', 'nav.contact'],
 ];
@@ -25,8 +26,8 @@ export default function Header() {
     <header className={`header${stuck ? ' is-stuck' : ''}`}>
       <div className="header__in">
         <a href="#top" className="brand" aria-label="Blue Consulting" onClick={close}>
-          <img src="./assets/logo-white.svg" alt="" className="brand__on-dark" />
-          <img src="./assets/logo-steel.svg" alt="" className="brand__on-light" />
+          <img src="./assets/logo-white.svg" alt="" className="brand__on-dark" width="168" height="40" />
+          <img src="./assets/logo-steel.svg" alt="" className="brand__on-light" width="168" height="40" />
         </a>
         <nav className="nav" id="nav" aria-label="Principal">
           {LINKS.map(([href, key]) => (

@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Tx, useLang } from '../i18n/LangContext.jsx';
+import { Tx } from '../i18n/LangContext.jsx';
 import { Reveal } from './Reveal.jsx';
 
 const Ico = ({ children }) => (
@@ -49,63 +48,34 @@ const AREAS = [
 ];
 
 export default function Services() {
-  const { t } = useLang();
-  const [active, setActive] = useState(AREAS[0].id);
-  const current = AREAS.find((area) => area.id === active) ?? AREAS[0];
-
-  const handleKeyDown = (event) => {
-    if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
-    event.preventDefault();
-    const index = AREAS.findIndex((area) => area.id === active);
-    const step = event.key === 'ArrowRight' ? 1 : -1;
-    const next = AREAS[(index + step + AREAS.length) % AREAS.length];
-    setActive(next.id);
-    document.getElementById(`svc-tab-${next.id}`)?.focus();
-  };
-
   return (
     <section className="section" id="servicios">
       <div className="wrap">
-        <Reveal className="head">
-          <Tx as="p" k="svc.kicker" className="kicker" />
-          <Tx as="h2" k="svc.title" className="h-display" />
-        </Reveal>
-        <div className="svc" role="tablist" aria-label={t('svc.kicker')} onKeyDown={handleKeyDown}>
-          {AREAS.map((area) => {
-            const selected = area.id === active;
-            return (
-              <button
-                key={area.id}
-                id={`svc-tab-${area.id}`}
-                className={`svc__card${selected ? ' is-on' : ''}`}
-                type="button"
-                role="tab"
-                aria-selected={selected}
-                aria-controls="svc-panel"
-                tabIndex={selected ? 0 : -1}
-                onClick={() => setActive(area.id)}
-              >
-                <Ico>{area.icon}</Ico>
-                <Tx as="span" k={area.title} className="svc__name" />
-                <Tx as="span" k={area.line} className="svc__line" />
-              </button>
-            );
-          })}
+        <div className="split-head">
+          <Reveal>
+            <p className="kicker"><span className="kicker__mark" aria-hidden="true" /><Tx k="svc.kicker" /></p>
+            <Tx as="h2" k="svc.title" className="h-display h-display--left" />
+          </Reveal>
         </div>
-        <div
-          className="svc__panel"
-          id="svc-panel"
-          role="tabpanel"
-          aria-labelledby={`svc-tab-${current.id}`}
-        >
-          <p className="svc__scope">
-            <Tx k={current.title} />
-            <span aria-hidden="true"> · </span>
-            <Tx k="svc.includes" />
-          </p>
-          <ul className="svc__list">
-            {current.items.map((key) => <Tx as="li" k={key} key={key} />)}
-          </ul>
+        <div className="dossiers">
+          {AREAS.map((area, index) => (
+            <Reveal as="article" className="dossier" id={`area-${area.id}`} key={area.id} delay={index * 60}>
+              <div>
+                <div className="dossier__top">
+                  <span className="dossier__ico"><Ico>{area.icon}</Ico></span>
+                </div>
+                <Tx as="h3" k={area.title} />
+                <Tx as="p" k={area.line} className="dossier__line" />
+                <ul>
+                  {area.items.map((key) => <li key={key}><Tx k={key} /></li>)}
+                </ul>
+              </div>
+              <a className="dossier__go" href="#reservar">
+                <Tx k="svc.ask" />
+                <span aria-hidden="true">→</span>
+              </a>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

@@ -98,6 +98,20 @@ export default function Booking() {
     administrativo: t('svc.adm'),
   }[service];
   const modeLabel = { video: t('form.mode.video'), phone: t('form.mode.phone'), office: t('form.mode.office') }[f.mode];
+  const pickedDate = f.date
+    ? parseISO(f.date).toLocaleDateString(lang === 'en' ? 'en-US' : 'es-CO', { weekday: 'long', day: 'numeric', month: 'long' })
+    : '';
+  const pickedLabel = pickedDate ? `${pickedDate.charAt(0).toUpperCase()}${pickedDate.slice(1)}` : '';
+  const pickedShort = f.date
+    ? parseISO(f.date).toLocaleDateString(lang === 'en' ? 'en-US' : 'es-CO', { weekday: 'long', day: 'numeric', month: 'short' }).replace(/\./g, '')
+    : '';
+
+  const renderSlot = (hm) => (
+    <label className="slot" key={hm}>
+      <input type="radio" name="time" value={hm} checked={f.time === hm} onChange={set('time')} />
+      <span>{hourLabel(hm, lang)}</span>
+    </label>
+  );
 
   const handleConfirm = () => {
     const emailOk = /^\S+@\S+\.\S+$/.test(f.email.trim());
@@ -133,50 +147,63 @@ export default function Booking() {
         <Reveal className="head">
           <Tx as="p" k="book.kicker" className="kicker" />
           <Tx as="h2" k="book.title" className="h-display" />
+          <Tx as="p" k="book.lead" className="book__lead" />
         </Reveal>
         <Reveal className="book">
           <div className="book__when">
-            <div className="cal" aria-label={monthLabel}>
-              <div className="cal__bar">
-                <button type="button" onClick={() => shiftMonth(-1)} disabled={!canGoPrev} aria-label={t('cal.prev')}>‹</button>
-                <strong>{monthLabel}</strong>
-                <button type="button" onClick={() => shiftMonth(1)} aria-label={t('cal.next')}>›</button>
-              </div>
-              <div className="cal__grid">
-                {week.map((name) => <span className="cal__dow" key={name}>{name}</span>)}
-                {cells.map((date, index) => {
-                  if (!date) return <span key={`e-${index}`} />;
-                  const value = iso(date);
-                  const open = date >= minDay && CONFIG.slots.days.includes(date.getDay());
-                  return (
-                    <button
-                      key={value}
-                      type="button"
-                      className={`cal__day${f.date === value ? ' is-on' : ''}`}
-                      disabled={!open}
-                      aria-pressed={f.date === value}
-                      onClick={() => pickDay(date)}
-                    >
-                      {date.getDate()}
+            <p className="step"><span>1</span><Tx k="book.step1" /></p>
+            <Tx as="p" k="book.rule" className="cal__rule" />
+            <div className="cal-split">
+              <div className="cal" aria-label={monthLabel}>
+                <div className="cal__bar">
+                  <strong>{monthLabel}</strong>
+                  <div className="cal__nav">
+                    <button type="button" onClick={() => shiftMonth(-1)} disabled={!canGoPrev} aria-label={t('cal.prev')}>
+                      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z" /></svg>
                     </button>
-                  );
-                })}
+                    <button type="button" onClick={() => shiftMonth(1)} aria-label={t('cal.next')}>
+                      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>
+                    </button>
+                  </div>
+                </div>
+                <div className="cal__grid">
+                  {week.map((name) => <span className="cal__dow" key={name}>{name}</span>)}
+                  {cells.map((date, index) => {
+                    if (!date) return <span key={`e-${index}`} />;
+                    const value = iso(date);
+                    const open = date >= minDay && CONFIG.slots.days.includes(date.getDay());
+                    return (
+                      <button
+                        key={value}
+                        type="button"
+                        className={`cal__day${f.date === value ? ' is-on' : ''}`}
+                        disabled={!open}
+                        aria-pressed={f.date === value}
+                        aria-label={`${date.getDate()} ${monthLabel}`}
+                        onClick={() => pickDay(date)}
+                      >
+                        {date.getDate()}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-            <div className="slotcol">
-              <span className="slotcol__label" id="time-label">{t('cal.slots')}</span>
-              <div className="slots" role="radiogroup" aria-labelledby="time-label">
-                {slots.map((hm) => (
-                  <label className="slot" key={hm}>
-                    <input type="radio" name="time" value={hm} checked={f.time === hm} onChange={set('time')} />
-                    <span>{hourLabel(hm, lang)}</span>
-                  </label>
-                ))}
+              <div className="slotcol">
+                <p className="slotcol__date" id="time-label">{pickedShort}</p>
+                <div className="slots" role="radiogroup" aria-labelledby="time-label">
+                  {slots.map(renderSlot)}
+                </div>
               </div>
             </div>
           </div>
 
           <form className="form" noValidate onSubmit={(e) => { e.preventDefault(); handleConfirm(); }}>
+            <p className="step"><span>2</span><Tx k="book.step2" /></p>
+            <p className="book__pick">
+              <Tx k="form.when" />
+              <strong>{pickedLabel} · {f.time ? hourLabel(f.time, lang) : '—'} · {modeLabel}</strong>
+              <em>{CONFIG.timezoneLabel}</em>
+            </p>
             <label className="f"><Tx k="form.name" />
               <input type="text" value={f.name} onChange={set('name')} required autoComplete="name" />
             </label>
