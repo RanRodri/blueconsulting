@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { Tx } from '../i18n/LangContext.jsx';
 import { Reveal } from './Reveal.jsx';
 
@@ -13,23 +12,6 @@ const AREAS = [
   { id: 'administrativo', title: 'svc.adm', items: ['svc.adm.1', 'svc.adm.2'] },
 ];
 
-/* Inclinación 3D según la posición del cursor (CSS perspective, sin librerías) */
-function Tilt({ children }) {
-  const ref = useRef(null);
-  const move = (e) => {
-    if (e.pointerType && e.pointerType !== 'mouse') return;
-    const el = ref.current, r = el.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-    el.style.setProperty('--ry', `${(x * 12).toFixed(2)}deg`);
-    el.style.setProperty('--rx', `${(-y * 10).toFixed(2)}deg`);
-    el.classList.add('is-tilting');
-  };
-  const leave = () => {
-    const el = ref.current; el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg'); el.classList.remove('is-tilting');
-  };
-  return <div className="tilt" ref={ref} onPointerMove={move} onPointerLeave={leave}>{children}</div>;
-}
-
 export default function Services({ onPick }) {
   return (
     <section className="section" id="servicios">
@@ -41,12 +23,10 @@ export default function Services({ onPick }) {
         <div className="svc">
           {AREAS.map((a, i) => (
             <Reveal as="article" className="svc__col" key={a.id} delay={i * 100}>
-              <Tilt>
-              <svg className="svc__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">{ICONS[a.id]}</svg>
+              <svg className="svc__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{ICONS[a.id]}</svg>
               <Tx as="h3" k={a.title} />
               <ul>{a.items.map((k) => <Tx as="li" k={k} key={k} />)}</ul>
               <a href="#reservar" className="svc__link" onClick={() => onPick(a.id)}><Tx k="svc.cta" /></a>
-              </Tilt>
             </Reveal>
           ))}
         </div>

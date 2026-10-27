@@ -9,7 +9,7 @@ Bilingüe ES (por defecto) / EN. Reserva de reuniones por formulario (WhatsApp /
     npm run build    # genera dist/ (estático, base './')
 
 ## Qué editar
-- `src/config.js`: WhatsApp, correo, dirección, horarios del formulario, **`calendarEmbedUrl`** (Calendly/Google Calendar), **`social`** (URLs de Instagram y LinkedIn; vacías = íconos deshabilitados con aviso "pendientes"), **`heroImage`** (ej. `/assets/hero.jpg`, archivo en `public/assets/`; vacío = fondo de marca).
+- `src/config.js`: WhatsApp, correo, dirección, horarios del formulario, **`bookingEmbedUrl`** (Calendly/Google Calendar), **`social`** (URLs de Instagram y LinkedIn; vacías = íconos deshabilitados con aviso "pendientes"), **`heroImage`** (ej. `/assets/hero.jpg`, archivo en `public/assets/`; vacío = fondo estático de marca).
 - `src/i18n/dictionary.js`: todos los textos ES/EN.
 - `src/styles/styles.css`: diseño y paleta (variables al inicio).
 
@@ -22,9 +22,7 @@ Fuentes: Roboto + Nunito Sans (Google Fonts).
 
 Sección "Equipo" eliminada a pedido del cliente.
 
-## 3D del hero (react-three-fiber + drei + three)
-- `src/components/Hero3D.jsx`: anillo "pincelada" de vidrio/brillo (eco del círculo del logo) que flota y reacciona al mouse, sobre cordilleras low-poly y agua en la paleta de marca, luz suave y niebla.
-- Carga diferida (`React.lazy` + `Suspense`, chunk aparte de ~240 kB gzip), DPR limitado a 1.5, se pausa fuera de pantalla (IntersectionObserver).
-- Cae al degradado + SVG si hay "reducir movimiento", sin WebGL, ahorro de datos o móvil de baja potencia. `?3d=0` lo apaga y `?3d=1` lo fuerza.
-- Tarjetas de servicios: inclinación 3D con CSS `perspective` (solo con mouse).
+## Hero
+Fondo estático (CSS + SVG, sin WebGL): degradado en la paleta de marca (`#36465F`, `#556A88`, `#87A09A`, `#B6CDCB`, `#A5ADBE`) y anillos lineales que evocan el círculo del logo. El texto queda sobre un velo suave para seguir leyéndose.
+Las tarjetas de servicios usan un hover ligero (elevación y sombra), sin inclinación.
 # blueconsulting

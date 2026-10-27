@@ -1,42 +1,33 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
 import { CONFIG } from '../config.js';
 import { Tx } from '../i18n/LangContext.jsx';
 
-const Hero3D = lazy(() => import('./Hero3D.jsx'));
-
-/* El 3D solo se carga si el equipo lo soporta: sin "reducir movimiento", con WebGL
-   y sin modo ahorro de datos / móvil de baja potencia. ?3d=1 o ?3d=0 fuerza la opción. */
-function can3D() {
-  try {
-    const q = new URLSearchParams(location.search).get('3d');
-    if (q === '0') return false;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches && q !== '1') return false;
-    const c = document.createElement('canvas');
-    if (!(c.getContext('webgl2') || c.getContext('webgl'))) return false;
-    if (q === '1') return true;
-    const small = window.innerWidth < 700;
-    const weak = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 2;
-    if (navigator.connection?.saveData || (small && weak)) return false;
-    return true;
-  } catch { return false; }
-}
-
 export function Hero() {
-  const [use3d, setUse3d] = useState(false);
-  const [ready, setReady] = useState(false);
-  useEffect(() => { setUse3d(can3D()); }, []);
-  const style = CONFIG.heroImage ? { backgroundImage: `linear-gradient(rgba(38,52,74,.55),rgba(38,52,74,.55)), url(${CONFIG.heroImage})` } : undefined;
+  const style = CONFIG.heroImage
+    ? { backgroundImage: `linear-gradient(rgba(38,52,74,.55),rgba(38,52,74,.55)), url(${CONFIG.heroImage})` }
+    : undefined;
   return (
     <section className="hero" id="top">
-      <div className={`hero__bg${ready ? ' is-3d' : ''}`} style={style} aria-hidden="true">
-        {use3d && <Suspense fallback={null}><Hero3D onReady={() => setReady(true)} /></Suspense>}
-        <svg className="hero__art" viewBox="0 0 1600 700" preserveAspectRatio="xMidYMax slice" fill="none">
-          <g stroke="#ffffff" strokeOpacity=".16">
-            <circle cx="1290" cy="190" r="70" /><circle cx="1290" cy="190" r="130" /><circle cx="1290" cy="190" r="200" /><circle cx="1290" cy="190" r="280" /><circle cx="1290" cy="190" r="370" />
+      <div className="hero__bg" style={style} aria-hidden="true">
+        <svg className="hero__art" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+          <g fill="none" strokeLinecap="round">
+            <circle cx="1288" cy="168" r="72" stroke="#B6CDCB" strokeOpacity=".55" strokeWidth="1.25" />
+            <circle cx="1288" cy="168" r="128" stroke="#A5ADBE" strokeOpacity=".4" strokeWidth="1" />
+            <circle cx="1288" cy="168" r="196" stroke="#ffffff" strokeOpacity=".18" strokeWidth=".8" />
+            <circle cx="1288" cy="168" r="278" stroke="#B6CDCB" strokeOpacity=".16" strokeWidth=".7" />
+            <circle cx="1288" cy="168" r="372" stroke="#ffffff" strokeOpacity=".1" strokeWidth=".6" />
+            <path d="M1148 286A196 196 0 1 1 1186 62" stroke="#87A09A" strokeOpacity=".72" strokeWidth="2.4" />
+            <path d="M1164 266A166 166 0 1 1 1208 82" stroke="#B6CDCB" strokeOpacity=".38" strokeWidth="1" />
           </g>
-          <path d="M0 470C240 410 430 520 700 470S1170 380 1400 440 1560 470 1600 450V700H0Z" fill="#87A09A" fillOpacity=".28" />
-          <path d="M0 530C260 480 470 580 760 530S1190 450 1420 510 1560 530 1600 520V700H0Z" fill="#B6CDCB" fillOpacity=".22" />
-          <path d="M0 600C280 560 520 640 800 600S1240 540 1450 590 1570 600 1600 595V700H0Z" fill="#A5ADBE" fillOpacity=".25" />
+          <circle cx="1186" cy="62" r="4.5" fill="#B6CDCB" fillOpacity=".9" />
+          <g fill="none" stroke="#ffffff" strokeOpacity=".12" strokeWidth=".8">
+            <circle cx="150" cy="700" r="70" />
+            <circle cx="150" cy="700" r="128" />
+            <circle cx="150" cy="700" r="198" />
+            <circle cx="150" cy="700" r="280" />
+          </g>
+          <path d="M0 620C220 560 420 680 700 620S1180 520 1420 590 1560 620 1600 600V900H0Z" fill="#87A09A" fillOpacity=".22" />
+          <path d="M0 700C260 650 480 770 780 710S1220 640 1460 700 1570 720 1600 710V900H0Z" fill="#B6CDCB" fillOpacity=".16" />
+          <path d="M0 790C300 760 540 840 820 800S1260 740 1480 790 1580 800 1600 795V900H0Z" fill="#A5ADBE" fillOpacity=".2" />
         </svg>
       </div>
       <div className="hero__in">

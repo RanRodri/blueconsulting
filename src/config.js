@@ -12,7 +12,7 @@ export const CONFIG = {
   social: { instagram: '', linkedin: '' },
 
   /* Foto de fondo del hero (opcional). Ej.: '/assets/hero.jpg' (archivo en public/assets/).
-     Vacío = fondo de marca con gradiente y ondas. */
+     Vacío = fondo estático de marca: degradado y anillos SVG. */
   heroImage: '',
 
   /* ---- RESERVA DE REUNIONES (Calendly / Google Calendar) ----
