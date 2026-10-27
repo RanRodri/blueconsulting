@@ -80,13 +80,19 @@ button,input,select{font:inherit}
 
 .line-ico{width:46px;height:46px;color:var(--sage)}
 
-/* Servicios */
-.svc{display:grid;grid-template-columns:repeat(3,1fr)}
-.svc__col{padding:8px 36px 4px;text-align:left}
-.svc__col+.svc__col{border-left:1px solid var(--line)}
-.svc__col h3{font-weight:400;font-size:1.45rem;color:var(--sage);margin:16px 0 18px}
-.svc__col ul{display:grid;gap:10px;padding-left:1.05em;list-style:disc;color:var(--text);font-weight:300;font-size:.98rem;line-height:1.45}
-.svc__col li::marker{color:var(--lav)}
+/* Servicios: tres tarjetas iguales; el detalle vive en un solo panel */
+.svc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
+.svc__card{display:flex;flex-direction:column;align-items:center;gap:14px;height:100%;margin:0;padding:32px 24px 28px;border:1px solid var(--line);background:#fff;color:inherit;font:inherit;text-align:center;cursor:pointer;transition:border-color .25s var(--ease),background-color .25s var(--ease)}
+.svc__card .line-ico{margin-inline:auto}
+.svc__name{font-weight:400;font-size:1.45rem;line-height:1.2;color:var(--sage)}
+.svc__line{display:block;min-height:2.9em;max-width:26ch;font-weight:300;font-size:.98rem;line-height:1.45;color:var(--text)}
+.svc__card:hover{border-color:var(--mist)}
+.svc__card.is-on{border-color:var(--sage);background:var(--tint);box-shadow:inset 0 -3px 0 var(--sage)}
+.svc__panel{margin-top:16px;padding:28px 32px 32px;border:1px solid var(--line);background:var(--tint);min-height:196px}
+.svc__scope{margin-bottom:18px;font:600 .72rem var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--sage)}
+.svc__list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 32px;align-content:start;margin:0;padding:0;list-style:none}
+.svc__list li{position:relative;padding-left:1em;font-weight:300;font-size:.98rem;line-height:1.45;color:var(--text)}
+.svc__list li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--lav)}
 
 /* Nosotros */
 .about__grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,72px);align-items:center}
@@ -193,8 +199,11 @@ button,input,select{font:inherit}
   .about__media img{height:360px}
 }
 @media (max-width:860px){
-  .svc,.mv{grid-template-columns:1fr}
-  .svc__col+.svc__col,.mv__col+.mv__col{border-left:0;border-top:1px solid var(--line);padding-top:32px;margin-top:28px}
+  .mv{grid-template-columns:1fr}
+  .mv__col+.mv__col{border-left:0;border-top:1px solid var(--line);padding-top:32px;margin-top:0}
+  .svc{grid-template-columns:1fr}
+  .svc__list{grid-template-columns:1fr}
+  .svc__panel{min-height:0}
   .values{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
   .values li{font-size:.72rem}
   .why{grid-template-columns:1fr}

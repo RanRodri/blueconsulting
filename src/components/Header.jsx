@@ -3,8 +3,8 @@ import { useLang, Tx } from '../i18n/LangContext.jsx';
 
 const LINKS = [
   ['#top', 'nav.home'],
-  ['#nosotros', 'nav.about'],
   ['#servicios', 'nav.services'],
+  ['#nosotros', 'nav.about'],
   ['#reservar', 'nav.book'],
   ['#contacto', 'nav.contact'],
 ];
