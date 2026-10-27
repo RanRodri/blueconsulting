@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CONFIG } from '../config.js';
 import { Tx, useLang } from '../i18n/LangContext.jsx';
+import Booking from './Booking.jsx';
 
 const wa = `https://wa.me/${CONFIG.whatsappNumber}`;
 
@@ -29,7 +30,7 @@ export function Footer() {
     <footer className="colophon" id="contacto">
       <div className="wrap">
         <div className="colophon__brand">
-          <img src="./assets/logo-white.svg" alt="Blue Consulting" width="160" height="38" />
+          <img src="/assets/logo-white.svg" alt="Blue Consulting" width="160" height="38" />
         </div>
         <div className="colophon__grid">
           <div>
@@ -67,13 +68,8 @@ export function Footer() {
           <p><Tx k="foot.privacy" /></p>
         </div>
       </div>
+      <a className="float" href={wa} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">{Whats}</a>
     </footer>
-  );
-}
-
-export function Float() {
-  return (
-    <a className="float" href={wa} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">{Whats}</a>
   );
 }
 
@@ -91,8 +87,29 @@ export function StickyCta() {
     return () => window.removeEventListener('scroll', tick);
   }, []);
   return (
-    <a className={`btn sticky-cta${on ? ' is-on' : ''}`} href="#agendar">
-      <Tx k="nav.book" />
-    </a>
+    <div className={`sticky-cta${on ? ' is-on' : ''}`}>
+      <button type="button" className="btn sticky-cta__btn" onClick={() => window.dispatchEvent(new Event('bc-open-book'))}>
+        <Tx k="nav.book" />
+      </button>
+    </div>
+  );
+}
+
+export function BookDialog() {
+  const ref = useRef(null);
+  const { t } = useLang();
+  useEffect(() => {
+    const open = () => ref.current?.showModal();
+    window.addEventListener('bc-open-book', open);
+    return () => window.removeEventListener('bc-open-book', open);
+  }, []);
+  return (
+    <dialog ref={ref} className="book-dialog" aria-labelledby="book-dialog-title">
+      <div className="book-dialog__bar">
+        <h2 id="book-dialog-title"><Tx k="book.title" /></h2>
+        <button type="button" className="btn btn--line" onClick={() => ref.current?.close()}>{t('dialog.close')}</button>
+      </div>
+      <Booking instance="dialog" showInvite={false} />
+    </dialog>
   );
 }

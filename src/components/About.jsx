@@ -1,6 +1,7 @@
-import { CONFIG } from '../config.js';
+import { media, lqip } from '../images.js';
 import { Tx, useLang } from '../i18n/LangContext.jsx';
-import { Count, useReveal } from './Motion.jsx';
+import { Count } from './Motion.jsx';
+import { Picture } from './Picture.jsx';
 
 const METER = [
   [10, 'facts.1.l'],
@@ -9,9 +10,8 @@ const METER = [
 ];
 
 export function Meter() {
-  const ref = useReveal();
   return (
-    <section className="meter" ref={ref}>
+    <section className="meter">
       <ul className="wrap">
         {METER.map(([num, label]) => (
           <li key={label}>
@@ -26,19 +26,11 @@ export function Meter() {
 
 export default function About() {
   const { t } = useLang();
-  const ref = useReveal();
   return (
-    <section className="block" id="nosotros" ref={ref}>
+    <section className="block" id="nosotros">
       <div className="wrap split">
         <figure className="split__photo zoom">
-          <img
-            src={CONFIG.stepImages[0]}
-            alt={t('method.1.alt')}
-            width="900"
-            height="600"
-            loading="lazy"
-            decoding="async"
-          />
+          <Picture picture={media.plans} lqip={lqip.plans} alt={t('method.1.alt')} sizes="(max-width: 860px) 100vw, 50vw" />
         </figure>
         <div className="split__copy">
           <p className="kicker"><Tx k="about.kicker" /></p>

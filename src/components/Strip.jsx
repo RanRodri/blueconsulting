@@ -1,27 +1,27 @@
+import { useState } from 'react';
+import { media, lqip } from '../images.js';
 import { Tx, useLang } from '../i18n/LangContext.jsx';
-import { useReveal } from './Motion.jsx';
+import { Picture } from './Picture.jsx';
 
 const SHOTS = [
-  { src: './assets/svc-amb-640.webp', alt: 'svc.env.alt' },
-  { src: './assets/svc-min-640.webp', alt: 'svc.min.alt' },
-  { src: './assets/step-4.webp', alt: 'method.4.alt' },
-  { src: './assets/hero-800.webp', alt: 'scene.water' },
-  { src: './assets/step-1.webp', alt: 'method.1.alt' },
-  { src: './assets/svc-adm-640.webp', alt: 'svc.adm.alt' },
+  { picture: media.stripForest, lqip: lqip.forest, alt: 'svc.env.alt' },
+  { picture: media.stripMine, lqip: lqip.mine, alt: 'svc.min.alt' },
+  { picture: media.sprout, lqip: lqip.sprout, alt: 'method.4.alt' },
+  { picture: media.stripHero, lqip: lqip.hero, alt: 'scene.water' },
+  { picture: media.plans, lqip: lqip.plans, alt: 'method.1.alt' },
+  { picture: media.stripAdmin, lqip: lqip.admin, alt: 'svc.adm.alt' },
 ];
 
 function Set({ hidden, t }) {
   return (
     <div className="marquee__set" aria-hidden={hidden ? 'true' : undefined}>
       {SHOTS.map((shot, index) => (
-        <figure className="tile" key={`${shot.src}-${index}`}>
-          <img
-            src={shot.src}
+        <figure className="tile" key={`${shot.alt}-${index}`}>
+          <Picture
+            picture={shot.picture}
+            lqip={hidden ? undefined : shot.lqip}
             alt={hidden ? '' : t(shot.alt)}
-            width="640"
-            height="420"
-            loading="lazy"
-            decoding="async"
+            sizes="340px"
           />
         </figure>
       ))}
@@ -31,17 +31,27 @@ function Set({ hidden, t }) {
 
 export default function Strip() {
   const { t } = useLang();
-  const ref = useReveal();
+  const [paused, setPaused] = useState(false);
   const label = `${t('svc.env')}, ${t('svc.min')}, ${t('svc.adm')}`;
   return (
-    <section className="marquee" ref={ref} aria-label={label}>
-      <p className="marquee__label wrap">
-        <Tx k="svc.env" />
-        <span aria-hidden="true">·</span>
-        <Tx k="svc.min" />
-        <span aria-hidden="true">·</span>
-        <Tx k="svc.adm" />
-      </p>
+    <section className={`marquee${paused ? ' is-paused' : ''}`} aria-label={label}>
+      <div className="wrap marquee__bar">
+        <p className="marquee__label">
+          <Tx k="svc.env" />
+          <span aria-hidden="true">·</span>
+          <Tx k="svc.min" />
+          <span aria-hidden="true">·</span>
+          <Tx k="svc.adm" />
+        </p>
+        <button
+          type="button"
+          className="marquee__pause"
+          aria-pressed={paused}
+          onClick={() => setPaused((value) => !value)}
+        >
+          {paused ? t('marquee.play') : t('marquee.pause')}
+        </button>
+      </div>
       <div className="marquee__window">
         <div className="marquee__track">
           <Set t={t} />

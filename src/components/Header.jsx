@@ -34,8 +34,8 @@ export default function Header() {
     <header className={`site-head${stuck ? ' is-stuck' : ''}${open ? ' is-open' : ''}`}>
       <div className="wrap site-head__in">
         <a href="#top" className="brand" aria-label="Blue Consulting" onClick={close}>
-          <img className="logo-white" src="./assets/logo-white.svg" alt="" width="148" height="36" />
-          <img className="logo-steel" src="./assets/logo-steel.svg" alt="" width="148" height="36" />
+          <img className="logo-white" src="/assets/logo-white.svg" alt="" width="148" height="36" />
+          <img className="logo-steel" src="/assets/logo-steel.svg" alt="" width="148" height="36" />
         </a>
         <nav className="nav" id="nav" aria-label="Principal">
           <div className="lang lang--menu" role="group" aria-label={t('a11y.lang')}>
@@ -53,10 +53,10 @@ export default function Header() {
             <span aria-hidden="true">/</span>
             <button type="button" className={lang === 'en' ? 'is-active' : ''} aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</button>
           </div>
-          <a className="btn btn--book" href="#agendar" onClick={close}>
+          <button type="button" className="btn btn--book" onClick={() => { close(); window.dispatchEvent(new Event('bc-open-book')); }}>
             <span className="btn__long"><Tx k="nav.book" /></span>
             <span className="btn__short"><Tx k="nav.book.short" /></span>
-          </a>
+          </button>
           <button
             className="burger"
             type="button"

@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { CONFIG } from '../config.js';
+import { Activity, ViewTransition, startTransition, addTransitionType, useEffect, useRef, useState } from 'react';
+import { media, lqip } from '../images.js';
 import { Tx, useLang } from '../i18n/LangContext.jsx';
-import { useReveal } from './Motion.jsx';
+import { Picture } from './Picture.jsx';
 
 const PANELS = [
-  { title: 'mission.t', body: 'mission.p', image: CONFIG.serviceImages.ambiental, alt: 'svc.env.alt' },
-  { title: 'vision.t', body: 'vision.p', image: CONFIG.heroImage, alt: 'scene.water' },
-  { title: 'goal.t', body: 'goal.p', image: CONFIG.serviceImages.administrativo, alt: 'svc.adm.alt' },
+  { title: 'mission.t', body: 'mission.p', image: media.forest, lqip: lqip.forest, alt: 'svc.env.alt' },
+  { title: 'vision.t', body: 'vision.p', image: media.hero, lqip: lqip.hero, alt: 'scene.water' },
+  { title: 'goal.t', body: 'goal.p', image: media.admin, lqip: lqip.admin, alt: 'svc.adm.alt' },
 ];
 
 const VALUES = [
@@ -54,35 +54,33 @@ function Glyph({ name }) {
 
 export function Mission() {
   const { t } = useLang();
-  const ref = useReveal();
   const [on, setOn] = useState(0);
-  const pick = (index) => setOn(index);
+  const pick = (index) => startTransition(() => {
+    addTransitionType('tab');
+    setOn(index);
+  });
   const onKeys = (event) => {
     if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
     event.preventDefault();
     const next = event.key === 'ArrowRight' ? (on + 1) % PANELS.length : (on + PANELS.length - 1) % PANELS.length;
-    setOn(next);
-    event.currentTarget.querySelectorAll('[role="tab"]')[next]?.focus();
+    pick(next);
+    event.currentTarget.parentElement.querySelectorAll('[role="tab"]')[next]?.focus();
   };
-  const panel = PANELS[on];
   return (
-    <section className="block block--white" id="proposito" ref={ref}>
+    <section className="block block--white" id="proposito">
       <div className="wrap stage">
         <div className="stage__photo zoom">
           {PANELS.map((item, index) => (
-            <img
-              key={item.title}
-              className={index === on ? 'is-on' : ''}
-              src={item.image.src}
-              srcSet={item.image.srcSet}
-              sizes="(max-width: 860px) 100vw, 58vw"
-              alt={index === on ? t(item.alt) : ''}
-              aria-hidden={index === on ? undefined : true}
-              width="1200"
-              height="800"
-              loading="lazy"
-              decoding="async"
-            />
+            <Activity key={item.title} mode={index === on ? 'visible' : 'hidden'}>
+              <ViewTransition default="none" enter={{ tab: 'fade-step' }} exit={{ tab: 'fade-step' }}>
+                <Picture
+                  picture={item.image}
+                  lqip={item.lqip}
+                  alt={t(item.alt)}
+                  sizes="(max-width: 860px) 100vw, 50vw"
+                />
+              </ViewTransition>
+            </Activity>
           ))}
         </div>
         <div className="stage__copy">
@@ -90,7 +88,6 @@ export function Mission() {
             className="tabs"
             role="tablist"
             aria-label={`${t('mission.t')}, ${t('vision.t')}, ${t('goal.t')}`}
-            onKeyDown={onKeys}
           >
             {PANELS.map((item, index) => (
               <button
@@ -99,18 +96,25 @@ export function Mission() {
                 role="tab"
                 id={`tab-${index}`}
                 aria-selected={index === on}
-                aria-controls="purpose-panel"
+                aria-controls={`purpose-${index}`}
                 tabIndex={index === on ? 0 : -1}
                 onClick={() => pick(index)}
+                onKeyDown={onKeys}
               >
                 {t(item.title)}
               </button>
             ))}
           </div>
-          <div role="tabpanel" id="purpose-panel" aria-labelledby={`tab-${on}`}>
-            <Tx as="h2" k={panel.title} />
-            <Tx as="p" k={panel.body} />
-          </div>
+          {PANELS.map((item, index) => (
+            <Activity key={item.body} mode={index === on ? 'visible' : 'hidden'}>
+              <ViewTransition default="none" enter={{ tab: 'fade-step' }} exit={{ tab: 'fade-step' }}>
+                <div role="tabpanel" id={`purpose-${index}`} aria-labelledby={`tab-${index}`}>
+                  <Tx as="h2" k={item.title} />
+                  <Tx as="p" k={item.body} />
+                </div>
+              </ViewTransition>
+            </Activity>
+          ))}
         </div>
       </div>
     </section>
@@ -118,17 +122,16 @@ export function Mission() {
 }
 
 export function Values() {
-  const ref = useReveal();
   return (
-    <section className="values" id="valores" ref={ref}>
+    <section className="values" id="valores">
       <div className="wrap">
         <div className="block__head block__head--light">
           <p className="kicker"><Tx k="values.kicker" /></p>
           <Tx as="h2" k="values.title" />
         </div>
         <ol>
-          {VALUES.map((item) => (
-            <li key={item.key}>
+          {VALUES.map((item, index) => (
+            <li key={item.key} style={{ '--i': index }}>
               <span className="val__ico"><Glyph name={item.icon} /></span>
               <Tx as="strong" k={item.key} />
             </li>
@@ -140,7 +143,8 @@ export function Values() {
 }
 
 export function Quote() {
-  const ref = useReveal();
+  const { t } = useLang();
+  const ref = useRef(null);
   const [ready, setReady] = useState(false);
   useEffect(() => {
     const el = ref.current;
@@ -155,15 +159,22 @@ export function Quote() {
     }, { rootMargin: '600px' });
     io.observe(el);
     return () => io.disconnect();
-  }, [ref]);
+  }, []);
   const image = ready
-    ? `linear-gradient(rgba(31,42,59,.84), rgba(31,42,59,.84)), url(${CONFIG.quoteImage})`
+    ? `linear-gradient(rgba(31,42,59,.84), rgba(31,42,59,.84)), url(${media.quote})`
     : 'none';
+  const words = t('band.quote').split(/(\s+)/);
   return (
     <section className="band" ref={ref} style={{ backgroundImage: image }}>
       <div className="wrap band__in">
         <blockquote>
-          <Tx as="p" k="band.quote" />
+          <p>
+            {words.map((part, index) => (
+              part.trim()
+                ? <span className="quote-w" style={{ '--i': index }} key={index}>{part}</span>
+                : <span key={index}>{part}</span>
+            ))}
+          </p>
           <footer><Tx k="band.by" /></footer>
         </blockquote>
         <a className="btn btn--light" href="#nosotros"><Tx k="band.cta" /></a>
@@ -173,9 +184,8 @@ export function Quote() {
 }
 
 export function Why() {
-  const ref = useReveal();
   return (
-    <section className="block" id="porque" ref={ref}>
+    <section className="block block--white" id="porque">
       <div className="wrap">
         <div className="block__head">
           <p className="kicker"><Tx k="why.kicker" /></p>

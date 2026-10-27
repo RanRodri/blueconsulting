@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Activity, ViewTransition, startTransition, addTransitionType, useEffect, useMemo, useState } from 'react';
 import { CONFIG } from '../config.js';
+import { media, lqip } from '../images.js';
 import { useLang, Tx } from '../i18n/LangContext.jsx';
+import { Picture } from './Picture.jsx';
 const pad = (n) => String(n).padStart(2, '0');
 const iso = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const parseISO = (s) => {
@@ -14,9 +16,9 @@ const toMin = (hm) => {
 const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 
 const PATH = [
-  { n: '01', label: 'step.1', src: CONFIG.stepImages[0], alt: 'method.1.alt' },
-  { n: '02', label: 'step.2', src: CONFIG.stepImages[1], alt: 'method.2.alt' },
-  { n: '03', label: 'step.3', src: CONFIG.stepImages[2], alt: 'method.3.alt' },
+  { n: '01', label: 'step.1', picture: media.plans, lqip: lqip.plans, alt: 'method.1.alt' },
+  { n: '02', label: 'step.2', picture: media.table, lqip: lqip.table, alt: 'method.2.alt' },
+  { n: '03', label: 'step.3', picture: media.papers, lqip: lqip.papers, alt: 'method.3.alt' },
 ];
 
 const daySlots = (dateStr) => {
@@ -77,7 +79,12 @@ const escapeIcs = (value) => value
 
 const SERVICES = ['ambiental', 'minero', 'administrativo', 'general'];
 
-export default function Booking() {
+const moveStep = (setStep, next) => startTransition(() => {
+  addTransitionType('step');
+  setStep(next);
+});
+
+export default function Booking({ instance = 'page', showInvite = true }) {
   const { lang, t } = useLang();
   const initialDay = useMemo(nextOpenDay, []);
   const [step, setStep] = useState(1);
@@ -166,7 +173,7 @@ export default function Booking() {
 
   const goNext = () => {
     if (step === 1) {
-      setStep(2);
+      moveStep(setStep, 2);
       setErr('');
       return;
     }
@@ -179,7 +186,7 @@ export default function Booking() {
       return;
     }
     setErr('');
-    setStep(3);
+    moveStep(setStep, 3);
   };
 
   const handleConfirm = () => {
@@ -190,11 +197,11 @@ export default function Booking() {
     }
     if (!f.date || !f.time || !CONFIG.slots.days.includes(parseISO(f.date).getDay())) {
       setErr(t('form.err.when'));
-      setStep(2);
+      moveStep(setStep, 2);
       return;
     }
     setErr('');
-    setDone({
+    const payload = {
       name: f.name.trim(),
       company: f.company.trim(),
       email: f.email.trim(),
@@ -205,6 +212,32 @@ export default function Booking() {
       date: f.date,
       time: f.time,
       timeLabel: hourLabel(f.time, lang),
+      sent: false,
+      failed: false,
+    };
+    const formId = import.meta.env.VITE_FORMSPREE_ID;
+    if (!formId) {
+      setDone(payload);
+      return;
+    }
+    fetch(`https://formspree.io/f/${formId}`, {
+      method: 'POST',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: payload.name,
+        email: payload.email,
+        company: payload.company,
+        phone: payload.phone,
+        service: payload.service,
+        date: payload.date,
+        time: payload.timeLabel,
+        mode: payload.mode,
+        message: payload.msg,
+      }),
+    }).then((res) => {
+      startTransition(() => setDone({ ...payload, sent: res.ok, failed: !res.ok }));
+    }).catch(() => {
+      startTransition(() => setDone({ ...payload, failed: true }));
     });
   };
 
@@ -273,32 +306,34 @@ export default function Booking() {
   };
 
   return (
-    <section className="block block--white booking" id="agendar">
-      <div className="invite">
-        <img src={CONFIG.meetImage} alt={t('book.photo')} width="1200" height="675" loading="lazy" decoding="async" />
-        <div className="invite__copy wrap">
-          <p className="kicker"><Tx k="book.kicker" /></p>
-          <Tx as="h2" k="book.title" />
-          <a className="btn btn--light" href="#reserva"><Tx k="hero.cta1" /></a>
+    <section className={`block block--white booking${showInvite ? '' : ' booking--plain'}`} id={instance === 'page' ? 'agendar' : undefined}>
+      {showInvite && (
+        <div className="invite">
+          <Picture picture={media.meet} lqip={lqip.meet} alt={t('book.photo')} sizes="100vw" />
+          <div className="invite__copy wrap">
+            <p className="kicker"><Tx k="book.kicker" /></p>
+            <Tx as="h2" k="book.title" />
+            <a className="btn btn--light" href={`#${instance}-reserva`}><Tx k="hero.cta1" /></a>
+          </div>
         </div>
-      </div>
+      )}
       <div className="wrap">
-        <ol className="rail">
+        {showInvite && <ol className="rail">
           {PATH.map((item) => (
             <li key={item.n}>
               <p className="rail__n">{item.n}</p>
               <div className="rail__photo zoom">
-                <img src={item.src} alt={t(item.alt)} width="900" height="600" loading="lazy" decoding="async" />
+                <Picture picture={item.picture} lqip={item.lqip} alt={t(item.alt)} sizes="(max-width: 860px) 100vw, 33vw" />
               </div>
               <Tx as="h3" k={item.label} />
             </li>
           ))}
-        </ol>
+        </ol>}
         <p className="visit__alt rail__note"><Tx k="book.alt" /></p>
         <p className="rail__note">
           <a className="link-arrow" href={waHref} target="_blank" rel="noopener noreferrer"><Tx k="book.wa" /></a>
         </p>
-        <div className="visit" id="reserva">
+        <div className="visit" id={`${instance}-reserva`}>
           {done ? (
             <div className="success">
               <p className="eyebrow">
@@ -306,6 +341,8 @@ export default function Booking() {
                 <Tx k="form.ok.kicker" />
               </p>
               <Tx as="h3" k="form.ok.title" />
+              {done.sent ? <Tx as="p" k="form.sent" /> : null}
+              {done.failed ? <p className="form__err" role="alert"><Tx k="form.sent.fail" /></p> : null}
               <Tx as="p" k="form.ok.p" />
               <dl className="summary">
                 <div><dt>{t('msg.service')}</dt><dd>{done.service}</dd></div>
@@ -333,7 +370,8 @@ export default function Booking() {
                 ))}
               </ol>
 
-              {step === 1 && (
+              <Activity mode={step === 1 ? 'visible' : 'hidden'}>
+                <ViewTransition default="none" enter={{ step: 'fade-step' }} exit={{ step: 'fade-step' }}>
                 <fieldset className="pick">
                   <legend><Tx k="form.service" /></legend>
                   {[
@@ -348,9 +386,11 @@ export default function Booking() {
                     </label>
                   ))}
                 </fieldset>
-              )}
+                </ViewTransition>
+              </Activity>
 
-              {step === 2 && (
+              <Activity mode={step === 2 ? 'visible' : 'hidden'}>
+                <ViewTransition default="none" enter={{ step: 'fade-step' }} exit={{ step: 'fade-step' }}>
                 <div className="when">
                   <div className="cal" aria-label={monthLabel}>
                     <div className="cal__bar">
@@ -381,10 +421,10 @@ export default function Booking() {
                     </div>
                   </div>
                   <div className="slotcol">
-                    <p className="tz" id="tz-label">{t('cal.tz')}</p>
-                    <span className="slotcol__label" id="time-label">{t('cal.slots')}</span>
+                    <p className="tz" id={`${instance}-tz`}>{t('cal.tz')}</p>
+                    <span className="slotcol__label" id={`${instance}-time`}>{t('cal.slots')}</span>
                     {slots.length === 0 ? <p>{t('cal.empty')}</p> : (
-                      <div className="slots" role="radiogroup" aria-labelledby="time-label">
+                      <div className="slots" role="radiogroup" aria-labelledby={`${instance}-time`}>
                         {slots.map((hm) => (
                           <label className="slot" key={hm}>
                             <input type="radio" name="time" value={hm} checked={f.time === hm} onChange={set('time')} />
@@ -404,9 +444,11 @@ export default function Booking() {
                     </fieldset>
                   </div>
                 </div>
-              )}
+                </ViewTransition>
+              </Activity>
 
-              {step === 3 && (
+              <Activity mode={step === 3 ? 'visible' : 'hidden'}>
+                <ViewTransition default="none" enter={{ step: 'fade-step' }} exit={{ step: 'fade-step' }}>
                 <div className="fields">
                   <label className="f"><Tx k="form.name" />
                     <input type="text" name="name" value={f.name} onChange={set('name')} required autoComplete="name" />
@@ -424,13 +466,14 @@ export default function Booking() {
                     <textarea name="message" rows="4" value={f.msg} onChange={set('msg')} placeholder={t('form.msg.ph')} />
                   </label>
                 </div>
-              )}
+                </ViewTransition>
+              </Activity>
 
               {err && <p className="form__err" role="alert">{err}</p>}
 
               <div className="wizard__bar">
                 {step > 1 && (
-                  <button type="button" className="btn btn--line" onClick={() => { setStep((n) => n - 1); setErr(''); }}>
+                  <button type="button" className="btn btn--line" onClick={() => { moveStep(setStep, step - 1); setErr(''); }}>
                     <Tx k="step.back" />
                   </button>
                 )}

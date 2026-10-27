@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { CONFIG } from '../config.js';
+import { media, lqip } from '../images.js';
 import { Tx, useLang } from '../i18n/LangContext.jsx';
-import { useReveal } from './Motion.jsx';
+import { Picture } from './Picture.jsx';
 
 const ITEMS = [
   {
@@ -10,7 +10,8 @@ const ITEMS = [
     title: 'svc.env',
     alt: 'svc.env.alt',
     points: ['svc.env.1', 'svc.env.2', 'svc.env.3', 'svc.env.4', 'svc.env.5'],
-    image: CONFIG.serviceImages.ambiental,
+    image: media.forest,
+    lqip: lqip.forest,
   },
   {
     book: 'minero',
@@ -18,7 +19,8 @@ const ITEMS = [
     title: 'svc.min',
     alt: 'svc.min.alt',
     points: ['svc.min.1', 'svc.min.2', 'svc.min.3'],
-    image: CONFIG.serviceImages.minero,
+    image: media.mine,
+    lqip: lqip.mine,
   },
   {
     book: 'administrativo',
@@ -26,23 +28,22 @@ const ITEMS = [
     title: 'svc.adm',
     alt: 'svc.adm.alt',
     points: ['svc.adm.1', 'svc.adm.2'],
-    image: CONFIG.serviceImages.administrativo,
+    image: media.admin,
+    lqip: lqip.admin,
   },
 ];
 
 const goToBooking = (id) => (event) => {
   event.preventDefault();
   window.dispatchEvent(new CustomEvent('bc-service', { detail: id }));
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  document.getElementById('agendar')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+  window.dispatchEvent(new Event('bc-open-book'));
 };
 
 export default function Services() {
   const { t } = useLang();
-  const ref = useReveal();
   const [open, setOpen] = useState(null);
   return (
-    <section className="block" id="servicios" ref={ref}>
+    <section className="block block--white" id="servicios">
       <div className="wrap">
         <div className="block__head">
           <p className="kicker"><Tx k="svc.kicker" /></p>
@@ -55,15 +56,11 @@ export default function Services() {
             return (
               <article className={`vcard${on ? ' is-open' : ''}`} key={item.book}>
                 <div className="vcard__photo zoom">
-                  <img
-                    src={item.image.src}
-                    srcSet={item.image.srcSet}
-                    sizes="(max-width: 860px) 100vw, 33vw"
+                  <Picture
+                    picture={item.image}
+                    lqip={item.lqip}
                     alt={t(item.alt)}
-                    width="1200"
-                    height="800"
-                    loading="lazy"
-                    decoding="async"
+                    sizes="(max-width: 860px) 100vw, 33vw"
                   />
                 </div>
                 <div className="vcard__body">

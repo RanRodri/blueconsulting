@@ -5,7 +5,20 @@ Bilingüe ES (por defecto) / EN. Sin WebGL. La rama `redesign` abre con un paisa
 ## Comandos
     npm install
     npm run dev      # desarrollo
-    npm run build    # genera dist/ (estático, base './')
+    npm run build    # genera dist/ y, si hay Chrome, prerenderiza /es y /en
+    npm run lint     # eslint-plugin-jsx-a11y
+    npm run a11y     # axe sobre el preview de /es
+
+La base del build es `/`, para que `/es` y `/en` resuelvan los archivos. Copie `.env.example` a `.env` antes de construir si va a activar analítica o el envío del formulario.
+
+## Variables de entorno
+Todas son opcionales. Vacías, el sitio no carga analítica y la reserva sigue con `.ics`, WhatsApp y correo.
+
+- `VITE_SITE_URL`: origen absoluto para canonical y hreflang. Ejemplo `https://example.com`.
+- `VITE_PLAUSIBLE_DOMAIN`: dominio de Plausible. Si está definido, se carga el script sin cookies.
+- `VITE_PLAUSIBLE_SRC`: URL del script. Por defecto `https://plausible.io/js/script.js`.
+- `VITE_UMAMI_SRC` y `VITE_UMAMI_WEBSITE_ID`: alternativa Umami, solo si Plausible está vacío.
+- `VITE_FORMSPREE_ID`: id del formulario de Formspree. Si el envío falla, quedan WhatsApp, correo y `.ics`.
 
 ## Qué editar
 - `src/config.js`: WhatsApp, correo, dirección, mapa, horarios (30 min, lunes a viernes, America/Bogota) y fotos.
@@ -20,7 +33,7 @@ Logos: `public/assets/logo-{steel,sage,mist,lavender,white}.svg`.
 Experiencia del equipo: 10 años. Sectores: 3 (ambiental, minero, administrativo). Sede: Bucaramanga, Carrera 29 No. 55A-56. Constitución: 23 de junio de 2023. NIT 901726097-9. Representante legal: Dra. Yolanda Salazar Ortiz. No hay casos con cifras ni logos de clientes.
 
 ## Fotos (licencia libre)
-WebP. El hero precarga `hero-800.webp` y ofrece `srcset` 800/1200/1600. El resto va con `loading="lazy"`. Las fichas llevan saturación 0,82, contraste 1,04 y una veladura niebla. El hero conserva el color de la foto y lo cubre un degradado de la paleta.
+Las fotos de contenido viven en `src/assets` y el build las emite en AVIF y WebP con `srcset`. El hero usa `fetchpriority="high"`. El resto entra al acercarse a la pantalla y lleva un archivo pequeño, generado con vite-imagetools, como fondo de baja calidad. Las fichas llevan saturación 0,82, contraste 1,04 y una veladura niebla. Newsreader y Figtree se sirven desde `public/fonts` con `font-display: swap` y precarga. Newsreader va en el tamaño óptico del titular (opsz 48) y la cita en cursiva (opsz 36), en lugar del archivo variable completo, para no retrasar la primera pintura.
 
 Unsplash License:
 
@@ -39,5 +52,16 @@ Unsplash License:
 ## Mapa
 Iframe perezoso de Google Maps para la sede (`CONFIG.mapEmbed`). No usa API key.
 
+## Fotos de la comparación
+No son un proyecto de la firma. Están marcadas como ilustrativas.
+
+Unsplash License:
+
+- `src/assets/land-before.jpg` — terreno abierto. `photo-1500534314209-a25ddb2bd429`.
+- `src/assets/land-after.jpg` — ladera con cobertura vegetal. `photo-1470071459604-3b5ec3a7fe05`.
+
+## Mapa
+Dibujo SVG de Colombia. Resalta Santander y la sede en Bucaramanga. No coloca proyectos. El iframe de Google Maps sigue en el contacto.
+
 ## Movimiento
-Solo CSS, como máximo 400 ms. Se apaga con `prefers-reduced-motion`.
+Animaciones de scroll con `animation-timeline` dentro de `@supports`, y transiciones de vista al cambiar idioma, pestañas y pasos. Se apagan con `prefers-reduced-motion`. El texto corrido no entra con una animación de aparición.

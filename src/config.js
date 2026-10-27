@@ -1,6 +1,8 @@
 /* ============================================================
    BLUE CONSULTING · Configuración editable
    ============================================================ */
+import { media } from './images.js';
+
 export const CONFIG = {
   whatsappNumber: '573227337121',
   whatsappDisplay: '+57 322 733 7121',
@@ -11,33 +13,16 @@ export const CONFIG = {
 
   social: { instagram: '', linkedin: '' },
 
-  heroImage: {
-    src: './assets/hero-1200.webp',
-    srcSet: './assets/hero-800.webp 800w, ./assets/hero-1200.webp 1200w, ./assets/hero-1600.webp 1600w',
-  },
-  quoteImage: './assets/hero-1600.webp',
-  aboutImage: './assets/about.webp',
-  meetImage: './assets/meet.webp',
+  heroImage: { src: media.hero.img.src, srcSet: media.hero.sources.webp },
+  quoteImage: media.quote,
+  aboutImage: media.plans.img.src,
+  meetImage: media.meet.img.src,
   serviceImages: {
-    ambiental: {
-      src: './assets/svc-amb-1200.webp',
-      srcSet: './assets/svc-amb-640.webp 640w, ./assets/svc-amb-1200.webp 1200w',
-    },
-    minero: {
-      src: './assets/svc-min-1200.webp',
-      srcSet: './assets/svc-min-640.webp 640w, ./assets/svc-min-1200.webp 1200w',
-    },
-    administrativo: {
-      src: './assets/svc-adm-1200.webp',
-      srcSet: './assets/svc-adm-640.webp 640w, ./assets/svc-adm-1200.webp 1200w',
-    },
+    ambiental: { src: media.forest.img.src, srcSet: media.forest.sources.webp },
+    minero: { src: media.mine.img.src, srcSet: media.mine.sources.webp },
+    administrativo: { src: media.admin.img.src, srcSet: media.admin.sources.webp },
   },
-  stepImages: [
-    './assets/step-1.webp',
-    './assets/step-2.webp',
-    './assets/step-3.webp',
-    './assets/step-4.webp',
-  ],
+  stepImages: [media.plans.img.src, media.table.img.src, media.papers.img.src, media.sprout.img.src],
 
   bookingEmbedUrl: import.meta.env.VITE_BOOKING_EMBED_URL || '',
 

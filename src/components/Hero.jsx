@@ -1,19 +1,18 @@
-import { CONFIG } from '../config.js';
-import { Tx } from '../i18n/LangContext.jsx';
+import { media, lqip } from '../images.js';
+import { Tx, useLang } from '../i18n/LangContext.jsx';
+import { Picture } from './Picture.jsx';
 
 export function Hero() {
+  const { t } = useLang();
   return (
     <section className="hero" id="top">
-      <img
+      <Picture
         className="hero__photo"
-        src={CONFIG.heroImage.src}
-        srcSet={CONFIG.heroImage.srcSet}
+        picture={media.hero}
+        lqip={lqip.hero}
+        alt={t('scene.water')}
         sizes="100vw"
-        alt=""
-        width="1600"
-        height="900"
-        fetchPriority="high"
-        decoding="async"
+        priority
       />
       <div className="hero__shade" aria-hidden="true" />
       <div className="hero__body">
@@ -22,7 +21,7 @@ export function Hero() {
           <Tx as="h1" k="hero.title" />
           <Tx as="p" k="hero.lead" className="hero__lead" />
           <div className="hero__cta">
-            <a className="btn btn--light" href="#agendar"><Tx k="hero.cta1" /></a>
+            <button type="button" className="btn btn--light" onClick={() => window.dispatchEvent(new Event('bc-open-book'))}><Tx k="hero.cta1" /></button>
             <a className="btn btn--ghost" href="#servicios"><Tx k="hero.cta2" /></a>
           </div>
         </div>
