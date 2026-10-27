@@ -1,11 +1,13 @@
 import Header from './components/Header.jsx';
 import { Hero } from './components/Hero.jsx';
+import Facts from './components/Facts.jsx';
 import Services from './components/Services.jsx';
 import About from './components/About.jsx';
-import { CtaBand, Mission, Values, Why } from './components/Mission.jsx';
+import Method from './components/Method.jsx';
+import { Mission, Values, Projects, Why } from './components/Mission.jsx';
 import Booking from './components/Booking.jsx';
+import { Talk, Footer, Float } from './components/ContactFooter.jsx';
 import { Tx } from './i18n/LangContext.jsx';
-import { Contact, Footer } from './components/ContactFooter.jsx';
 
 export default function App() {
   return (
@@ -14,16 +16,20 @@ export default function App() {
       <Header />
       <main id="main">
         <Hero />
+        <Facts />
         <Services />
         <About />
+        <Method />
         <Mission />
         <Values />
-        <CtaBand />
+        <Projects />
         <Why />
         <Booking />
-        <Contact />
+        <Talk />
       </main>
       <Footer />
+      <Float />
+      <a className="dock" href="#agendar"><Tx k="dock.cta" /></a>
     </>
   );
 }

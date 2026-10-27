@@ -1,6 +1,6 @@
 # Blue Consulting · sitio web (Vite + React)
 
-Bilingüe ES (por defecto) / EN. Sin WebGL. Reserva de reuniones con calendario propio (la confirmación abre WhatsApp) y mapa embebido de la sede.
+Bilingüe ES (por defecto) / EN. Sin WebGL. La reserva es una solicitud en tres pasos: el equipo la confirma por WhatsApp o correo. No hay backend.
 
 ## Comandos
     npm install
@@ -8,21 +8,28 @@ Bilingüe ES (por defecto) / EN. Sin WebGL. Reserva de reuniones con calendario 
     npm run build    # genera dist/ (estático, base './')
 
 ## Qué editar
-- `src/config.js`: WhatsApp, correo, dirección, mapa, horarios del formulario, redes y rutas de las fotos.
+- `src/config.js`: WhatsApp, correo, dirección, mapa, horarios (30 min, lunes a viernes, America/Bogota) y fotos.
 - `src/i18n/dictionary.js`: todos los textos ES/EN.
-- `src/styles/styles.css`: diseño y paleta (variables al inicio).
+- `src/styles/styles.css`: diseño. Titulares Newsreader, cuerpo Figtree.
 
 ## Marca
-Paleta oficial: #556A88 azul acero · #87A09A salvia · #B6CDCB niebla · #A5ADBE lavanda gris.
-Derivado para títulos, banda y pie: #36465F.
+Papel `#F6F9F9`. Títulos, hero, botones y pie: `#36465F`. Acento `#556A88`. Salvia `#87A09A` y niebla `#B6CDCB` solo en fondos, líneas e iconos.
 Logos: `public/assets/logo-{steel,sage,mist,lavender,white}.svg`.
-Fuentes: Roboto + Nunito Sans.
+
+## Hechos que sí se publican
+Experiencia del equipo: 10 años. Áreas: 3. Sede: Bucaramanga, Carrera 29 No. 55A-56. Constitución: 23 de junio de 2023. NIT 901726097-9. Representante legal: Dra. Yolanda Salazar Ortiz. No hay casos con cifras ni logos de clientes.
 
 ## Fotos (licencia libre)
-Optimizadas a WebP. El hero se precarga (es la primera pintura). La foto de «Quiénes somos» y el mapa van con `loading="lazy"`.
+WebP. El hero lleva `srcset` 640/1280/1920 y se precarga. El resto va con `loading="lazy"`.
 
-- `public/assets/hero.webp` — lago alpino y montañas. Unsplash License, `photo-1501785888041-af3ef285b470`. [Archivo](https://images.unsplash.com/photo-1501785888041-af3ef285b470).
-- `public/assets/about.webp` — ingeniera con casco blanco mirando el horizonte. Licencia Pexels, foto 8961055. [Página](https://www.pexels.com/photo/8961055/).
+- `hero-*.webp` — lago y montañas. Unsplash License, `photo-1501785888041-af3ef285b470`.
+- `about.webp` — profesional con casco blanco. Licencia Pexels, foto 8961055.
+- `svc-amb-*.webp` — bosque de niebla. Unsplash License, `photo-1470071459604`.
+- `svc-min-*.webp` — colinas verdes. Unsplash License, `photo-1472214103451`.
+- `svc-adm-*.webp` — sala de trabajo vacía. Unsplash License, `photo-1497366216548`.
 
 ## Mapa
-Iframe perezoso de Google Maps para Carrera 29 No. 55A-56, Bucaramanga (`CONFIG.mapEmbed`). No usa API key.
+Iframe perezoso de Google Maps para la sede (`CONFIG.mapEmbed`). No usa API key.
+
+## Movimiento
+Solo CSS, como máximo 400 ms. Se apaga con `prefers-reduced-motion`.

@@ -22,8 +22,28 @@ export function LangProvider({ children }) {
   useEffect(() => {
     document.documentElement.lang = lang;
     document.title = lang === 'en'
-      ? 'Blue Consulting · Environmental, mining and administrative advisory'
-      : 'Blue Consulting · Asesoría ambiental, minera y administrativa';
+      ? 'Blue Consulting · Environmental, mining and legal advisory'
+      : 'Blue Consulting · Consultoría ambiental, minera y jurídica';
+    const base = new URL('.', window.location.href).href;
+    const links = [
+      ['canonical', null, base],
+      ['alternate', 'es', base],
+      ['alternate', 'en', `${base}?lang=en`],
+      ['alternate', 'x-default', base],
+    ];
+    links.forEach(([rel, hreflang, href]) => {
+      const sel = hreflang
+        ? `link[rel="${rel}"][hreflang="${hreflang}"]`
+        : `link[rel="${rel}"]:not([hreflang])`;
+      let el = document.head.querySelector(sel);
+      if (!el) {
+        el = document.createElement('link');
+        el.rel = rel;
+        if (hreflang) el.hreflang = hreflang;
+        document.head.appendChild(el);
+      }
+      el.href = href;
+    });
   }, [lang]);
   const value = useMemo(() => ({
     lang, setLang,

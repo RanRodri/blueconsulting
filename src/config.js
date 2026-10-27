@@ -11,18 +11,34 @@ export const CONFIG = {
 
   social: { instagram: '', linkedin: '' },
 
-  heroImage: './assets/hero.webp',
+  heroImage: {
+    src: './assets/hero-1280.webp',
+    srcSet: './assets/hero-640.webp 640w, ./assets/hero-1280.webp 1280w, ./assets/hero-1920.webp 1920w',
+  },
   aboutImage: './assets/about.webp',
+  serviceImages: {
+    ambiental: {
+      src: './assets/svc-amb-1280.webp',
+      srcSet: './assets/svc-amb-640.webp 640w, ./assets/svc-amb-1280.webp 1280w',
+    },
+    minero: {
+      src: './assets/svc-min-1280.webp',
+      srcSet: './assets/svc-min-640.webp 640w, ./assets/svc-min-1280.webp 1280w',
+    },
+    administrativo: {
+      src: './assets/svc-adm-1280.webp',
+      srcSet: './assets/svc-adm-640.webp 640w, ./assets/svc-adm-1280.webp 1280w',
+    },
+  },
 
-  /* Si pega un Calendly o Google Calendar, el formulario sigue disponible debajo. */
   bookingEmbedUrl: import.meta.env.VITE_BOOKING_EMBED_URL || '',
 
   slots: {
     days: [1, 2, 3, 4, 5],
     start: '08:00',
     end: '17:00',
-    stepMinutes: 60,
-    skip: ['12:00', '13:00'],
+    stepMinutes: 30,
+    skip: ['12:00', '12:30'],
   },
-  timezoneLabel: 'Colombia (UTC-5)',
+  timezone: 'America/Bogota',
 };

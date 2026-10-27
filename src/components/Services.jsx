@@ -1,65 +1,91 @@
-import { Tx } from '../i18n/LangContext.jsx';
+import { CONFIG } from '../config.js';
+import { Tx, useLang } from '../i18n/LangContext.jsx';
 import { Reveal } from './Reveal.jsx';
 
-const Ico = ({ children }) => (
-  <svg className="line-ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>
-);
-
-const AREAS = [
+const CARDS = [
   {
     id: 'ambiental',
+    book: 'ambiental',
     title: 'svc.env',
-    items: ['svc.env.1', 'svc.env.2', 'svc.env.3', 'svc.env.4', 'svc.env.5'],
-    icon: (
-      <>
-        <path d="M24 42c0-16 10-26 20-28-2 18-12 26-20 28Z" />
-        <path d="M24 42C24 26 14 16 4 14c2 18 12 26 20 28Z" />
-        <path d="M24 42V20" />
-      </>
-    ),
+    lead: 'svc.env.lead',
+    alt: 'svc.env.alt',
+    points: ['svc.env.1', 'svc.env.2', 'svc.env.3'],
+    image: CONFIG.serviceImages.ambiental,
+    num: '01',
   },
   {
-    id: 'minero',
+    id: 'minera',
+    book: 'minero',
     title: 'svc.min',
-    items: ['svc.min.1', 'svc.min.2', 'svc.min.3'],
-    icon: (
-      <>
-        <path d="M3 38 16 16l8 12 5-7 16 17" />
-        <path d="M8 38h32" />
-      </>
-    ),
+    lead: 'svc.min.lead',
+    alt: 'svc.min.alt',
+    points: ['svc.min.1', 'svc.min.2', 'svc.min.3'],
+    image: CONFIG.serviceImages.minero,
+    num: '02',
   },
   {
-    id: 'administrativo',
+    id: 'administrativa',
+    book: 'administrativo',
     title: 'svc.adm',
-    items: ['svc.adm.1', 'svc.adm.2'],
-    icon: (
-      <>
-        <path d="M8 40V18L24 8l16 10v22" />
-        <path d="M6 40h36" />
-        <path d="M20 40V28h8v12" />
-        <path d="M16 22h4M28 22h4M16 30h4M28 30h4" />
-      </>
-    ),
+    lead: 'svc.adm.lead',
+    alt: 'svc.adm.alt',
+    points: ['svc.adm.1', 'svc.adm.2'],
+    image: CONFIG.serviceImages.administrativo,
+    num: '03',
   },
 ];
 
+const goToBooking = (id) => (event) => {
+  event.preventDefault();
+  window.dispatchEvent(new CustomEvent('bc-service', { detail: id }));
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('agendar')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+};
+
 export default function Services() {
+  const { t } = useLang();
   return (
-    <section className="section" id="servicios">
+    <section className="section section--white" id="servicios">
       <div className="wrap">
-        <Reveal className="head">
-          <Tx as="p" k="svc.kicker" className="kicker" />
-          <Tx as="h2" k="svc.title" className="h-display" />
-        </Reveal>
-        <div className="svc">
-          {AREAS.map((area, i) => (
-            <Reveal as="article" className="svc__col" key={area.id} delay={i * 80}>
-              <Ico>{area.icon}</Ico>
-              <Tx as="h3" k={area.title} />
+        <div className="split-head">
+          <Reveal>
+            <p className="eyebrow">
+              <span className="eyebrow__line" aria-hidden="true" />
+              <Tx k="svc.kicker" />
+            </p>
+            <Tx as="h2" k="svc.title" />
+          </Reveal>
+          <Reveal delay={60}>
+            <Tx as="p" k="svc.lead" className="lead" />
+          </Reveal>
+        </div>
+        <div className="cards">
+          {CARDS.map((card, index) => (
+            <Reveal as="article" className="card" id={card.id} key={card.id} delay={Math.min(index, 3) * 60}>
+              <div className="card__photo">
+                <img
+                  src={card.image.src}
+                  srcSet={card.image.srcSet}
+                  sizes="(max-width: 860px) 100vw, 380px"
+                  alt={t(card.alt)}
+                  width="1280"
+                  height="960"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <p className="card__num">{card.num}</p>
+              <Tx as="h3" k={card.title} />
+              <Tx as="p" k={card.lead} />
               <ul>
-                {area.items.map((key) => <Tx as="li" k={key} key={key} />)}
+                {card.points.map((key) => (
+                  <li key={key}><Tx k={key} /></li>
+                ))}
               </ul>
+              <a className="link-arrow" href="#agendar" onClick={goToBooking(card.book)}>
+                <Tx k="svc.more" />
+                <span className="arr" aria-hidden="true">→</span>
+              </a>
             </Reveal>
           ))}
         </div>
