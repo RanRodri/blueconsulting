@@ -155,7 +155,8 @@ h3 { font-size: clamp(1.5rem, 2vw, 2rem); }
   color: inherit;
   text-decoration: none;
 }
-.header__tools { display: flex; align-items: center; gap: 4px; margin-left: 8px; }
+.header__tools { display: flex; align-items: center; margin-left: 8px; }
+.header__tools > * { flex: none; }
 .lang { display: flex; }
 .lang button {
   min-width: 48px;
@@ -437,7 +438,7 @@ legend { margin-bottom: 10px; }
 }
 .cal__nav button { min-width: 48px; }
 .cal__nav button:disabled, .cal__day:disabled { color: var(--steel); background: var(--paper); cursor: default; }
-.cal__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
+.cal__grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; }
 .cal__dow { display: grid; place-items: center; min-height: 32px; font-size: 14px; color: var(--steel); }
 .cal__day { padding: 0; }
 .slots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
@@ -519,8 +520,11 @@ body.nav-open .float { visibility: hidden; }
 }
 
 @media (max-width: 860px) {
-  .nav, .btn--nav { display: none; }
+  .nav { display: none; }
+  .btn--nav { padding: 0 8px; font-size: 14px; white-space: nowrap; }
+  .header__in { gap: 8px; }
   .burger { display: block; }
+  .brand img { height: 34px; }
   .header__tools { margin-left: auto; }
   .areas, .cards, .book, .pair, .area__grid, .choices, .choices--3 {
     grid-template-columns: 1fr;
