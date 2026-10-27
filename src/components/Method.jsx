@@ -1,5 +1,4 @@
 import { Tx } from '../i18n/LangContext.jsx';
-import { Reveal } from './Reveal.jsx';
 
 const STEPS = [
   ['01', 'method.1.t', 'method.1.p'],
@@ -10,27 +9,22 @@ const STEPS = [
 
 export default function Method() {
   return (
-    <section className="section section--deep" id="enfoque">
-      <div className="wrap">
-        <Reveal>
-          <p className="eyebrow eyebrow--mist">
-            <span className="eyebrow__line" aria-hidden="true" />
-            <Tx k="method.kicker" />
-          </p>
+    <section className="story" id="enfoque">
+      <div className="wrap story__grid">
+        <div className="story__pin">
+          <p className="kicker"><Tx k="method.kicker" /></p>
           <Tx as="h2" k="method.title" />
-        </Reveal>
-        <ol className="steps">
-          {STEPS.map(([num, title, body], index) => (
-            <Reveal as="li" className="step" key={num} delay={Math.min(index, 3) * 60}>
+          <Tx as="p" k="method.quote" className="story__quote" />
+        </div>
+        <ol className="story__steps">
+          {STEPS.map(([num, title, body]) => (
+            <li key={num}>
               <b>{num}</b>
               <Tx as="h3" k={title} />
               <Tx as="p" k={body} />
-            </Reveal>
+            </li>
           ))}
         </ol>
-        <Reveal>
-          <Tx as="blockquote" k="method.quote" className="pull" />
-        </Reveal>
       </div>
     </section>
   );

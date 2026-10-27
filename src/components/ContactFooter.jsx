@@ -1,6 +1,5 @@
 import { CONFIG } from '../config.js';
 import { Tx, useLang } from '../i18n/LangContext.jsx';
-import { Reveal } from './Reveal.jsx';
 
 const wa = `https://wa.me/${CONFIG.whatsappNumber}`;
 
@@ -22,73 +21,48 @@ const Social = ({ href, label, icon }) => {
   return <a className="social" href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>{icon}</a>;
 };
 
-export function Talk() {
-  return (
-    <section className="talk" id="contacto">
-      <div className="wrap talk__in">
-        <Reveal>
-          <p className="eyebrow eyebrow--mist">
-            <span className="eyebrow__line" aria-hidden="true" />
-            <Tx k="talk.kicker" />
-          </p>
-          <Tx as="h2" k="talk.title" className="display display--sm" />
-          <Tx as="p" k="talk.lead" />
-        </Reveal>
-        <a className="btn btn--light" href="#agendar">
-          <Tx k="talk.cta" />
-          <span className="arr" aria-hidden="true">→</span>
-        </a>
-      </div>
-    </section>
-  );
-}
-
 export function Footer() {
   const { lang, t } = useLang();
   const mapSrc = `${CONFIG.mapEmbed}&hl=${lang === 'en' ? 'en' : 'es'}`;
   return (
-    <footer className="footer">
-      <div className="wrap footer__grid">
-        <div>
-          <img src="./assets/logo-white.svg" alt="Blue Consulting" width="168" height="40" />
-          <Tx as="p" k="foot.blurb" />
-          <div className="footer__social">
-            <Social href={CONFIG.social.instagram} label={t('social.ig')} icon={Instagram} />
-            <Social href={CONFIG.social.linkedin} label={t('social.in')} icon={Linkedin} />
-            <a className="social" href={wa} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">{Whats}</a>
+    <footer className="colophon" id="contacto">
+      <div className="wrap">
+        <p className="wordmark" aria-hidden="true"><span>Blue</span><span>Consulting</span></p>
+        <div className="colophon__grid">
+          <div>
+            <Tx as="p" k="foot.blurb" />
+            <div className="colophon__social">
+              <Social href={CONFIG.social.instagram} label={t('social.ig')} icon={Instagram} />
+              <Social href={CONFIG.social.linkedin} label={t('social.in')} icon={Linkedin} />
+              <a className="social" href={wa} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">{Whats}</a>
+            </div>
+          </div>
+          <div>
+            <Tx as="h2" k="foot.services" />
+            <a href="#ambiental"><Tx k="svc.env" /></a>
+            <a href="#minera"><Tx k="svc.min" /></a>
+            <a href="#administrativa"><Tx k="svc.adm" /></a>
+          </div>
+          <div>
+            <Tx as="h2" k="foot.company" />
+            <a href="#nosotros"><Tx k="nav.about" /></a>
+            <a href="#enfoque"><Tx k="nav.method" /></a>
+            <a href="#casos"><Tx k="nav.cases" /></a>
+            <a href="#agendar"><Tx k="nav.book" /></a>
+          </div>
+          <div>
+            <Tx as="h2" k="foot.contact" />
+            <p>{t('foot.addr')}</p>
+            <p><a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></p>
+            <p><a href={wa} target="_blank" rel="noopener noreferrer">{CONFIG.whatsappDisplay}</a></p>
+            <p><a href={CONFIG.mapsUrl} target="_blank" rel="noopener noreferrer"><Tx k="foot.map" /></a></p>
+            <iframe title={t('contact.map')} src={mapSrc} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
           </div>
         </div>
-        <div>
-          <Tx as="h2" k="foot.services" />
-          <a href="#ambiental"><Tx k="svc.env" /></a>
-          <a href="#minera"><Tx k="svc.min" /></a>
-          <a href="#administrativa"><Tx k="svc.adm" /></a>
+        <div className="colophon__bar">
+          <p><Tx k="foot.legal" /></p>
+          <p><Tx k="foot.privacy" /></p>
         </div>
-        <div>
-          <Tx as="h2" k="foot.company" />
-          <a href="#nosotros"><Tx k="nav.about" /></a>
-          <a href="#enfoque"><Tx k="nav.method" /></a>
-          <a href="#casos"><Tx k="nav.cases" /></a>
-          <a href="#agendar"><Tx k="nav.book" /></a>
-        </div>
-        <div>
-          <Tx as="h2" k="foot.contact" />
-          <Tx as="p" k="foot.addr.label" className="footer__label" />
-          <p>{t('foot.addr')}</p>
-          <p><a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></p>
-          <p><a href={wa} target="_blank" rel="noopener noreferrer">{CONFIG.whatsappDisplay}</a></p>
-          <p><a href={CONFIG.mapsUrl} target="_blank" rel="noopener noreferrer"><Tx k="foot.map" /></a></p>
-          <iframe
-            title={t('contact.map')}
-            src={mapSrc}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-        </div>
-      </div>
-      <div className="wrap footer__bar">
-        <p><Tx k="foot.legal" /></p>
-        <p><Tx k="foot.privacy" /></p>
       </div>
     </footer>
   );
@@ -96,8 +70,6 @@ export function Footer() {
 
 export function Float() {
   return (
-    <a className="float" href={wa} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-      {Whats}
-    </a>
+    <a className="float" href={wa} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">{Whats}</a>
   );
 }

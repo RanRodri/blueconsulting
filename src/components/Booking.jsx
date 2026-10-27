@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { CONFIG } from '../config.js';
 import { useLang, Tx } from '../i18n/LangContext.jsx';
-import { Reveal } from './Reveal.jsx';
-
 const pad = (n) => String(n).padStart(2, '0');
 const iso = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const parseISO = (s) => {
@@ -268,19 +266,19 @@ export default function Booking() {
     setErr('');
   };
 
-  return (
-    <section className="section section--white" id="agendar">
-      <div className="wrap book">
-        <Reveal className="book__intro">
-          <p className="eyebrow">
-            <span className="eyebrow__line" aria-hidden="true" />
-            <Tx k="book.kicker" />
-          </p>
-          <Tx as="h2" k="book.title" />
-          <Tx as="p" k="book.note" className="lead" />
-        </Reveal>
+  const railStep = done ? 3 : step;
 
-        <Reveal className="book__card">
+  return (
+    <section className="desk" id="agendar">
+      <div className="desk__rail">
+        <p className="kicker"><Tx k="book.kicker" /></p>
+        <p className="desk__num">{String(railStep).padStart(2, '0')}</p>
+        <Tx as="h2" k={done ? 'form.ok.kicker' : `step.${step}`} />
+        <Tx as="p" k="book.note" />
+        <Tx as="p" k="book.alt" className="desk__alt" />
+        <a className="desk__wa" href={waHref} target="_blank" rel="noopener noreferrer"><Tx k="book.wa" /></a>
+      </div>
+      <div className="desk__main">
           {done ? (
             <div className="success">
               <p className="eyebrow">
@@ -427,14 +425,6 @@ export default function Booking() {
               </div>
             </form>
           )}
-        </Reveal>
-
-        <aside className="book__side">
-          <Tx as="p" k="book.alt" />
-          <a className="btn btn--wa" href={waHref} target="_blank" rel="noopener noreferrer">
-            <Tx k="book.wa" />
-          </a>
-        </aside>
       </div>
     </section>
   );

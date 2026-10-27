@@ -1,6 +1,6 @@
 # Blue Consulting · sitio web (Vite + React)
 
-Bilingüe ES (por defecto) / EN. Sin WebGL. La reserva es una solicitud en tres pasos: el equipo la confirma por WhatsApp o correo. No hay backend.
+Bilingüe ES (por defecto) / EN. Sin WebGL. La rama `redesign` es un índice editorial sobre papel (titular enorme, panel de servicios, relato con columna fija, pie con wordmark), distinto del hero fotográfico de `development`. La reserva es una solicitud en tres pasos: el equipo la confirma por WhatsApp o correo. No hay backend.
 
 ## Comandos
     npm install
@@ -20,7 +20,7 @@ Logos: `public/assets/logo-{steel,sage,mist,lavender,white}.svg`.
 Experiencia del equipo: 10 años. Áreas: 3. Sede: Bucaramanga, Carrera 29 No. 55A-56. Constitución: 23 de junio de 2023. NIT 901726097-9. Representante legal: Dra. Yolanda Salazar Ortiz. No hay casos con cifras ni logos de clientes.
 
 ## Fotos (licencia libre)
-WebP. El hero lleva `srcset` 640/1280/1920 y se precarga. El resto va con `loading="lazy"`.
+WebP. El paisaje del círculo superior lleva `srcset` 640/1280/1920 y se precarga. El resto va con `loading="lazy"`. No hay hero a sangre.
 
 - `hero-*.webp` — lago y montañas. Unsplash License, `photo-1501785888041-af3ef285b470`.
 - `about.webp` — profesional con casco blanco. Licencia Pexels, foto 8961055.
